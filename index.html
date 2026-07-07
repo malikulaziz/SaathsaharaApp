@@ -1,0 +1,3108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>SAATH SAHARA</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(145deg, #0a0e27 0%, #1a1a3e 100%);
+    padding: 20px 16px;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.96);
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  body.manager-mode .container { border: 3px solid #1b4f72; }
+  body.member-mode .container { border: 3px solid #0f2b3d; }
+
+  body.manager-mode .header { background: linear-gradient(135deg, #0f2b3d, #1b4f72); }
+  body.member-mode .header { background: linear-gradient(135deg, #0f2b3d, #1b4f72); }
+  .header {
+    padding: 18px 20px;
+    text-align: center;
+    position: relative;
+  }
+  .header h1 {
+    color: #fff;
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+  }
+  .header h1 .saath { color: #F39C12; }
+  .header h1 .sahara { color: #27AE60; }
+  .header .subtitle {
+    color: rgba(255,255,255,0.85);
+    font-size: 14px;
+    font-weight: 400;
+    margin-top: 2px;
+    letter-spacing: 0.5px;
+  }
+  .header .subtitle .tagline {
+    color: rgba(255,255,255,0.9);
+    font-size: 13px;
+    font-weight: 400;
+    margin-top: 4px;
+    letter-spacing: 0.3px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.4;
+  }
+  .header .subtitle .tagline .beesi { color: #F39C12; font-weight: 700; }
+  .header .subtitle .tagline .kameti { color: #27AE60; font-weight: 700; }
+  
+  .lang-selector {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: rgba(255,255,255,0.06);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    flex-wrap: wrap;
+  }
+  .lang-selector button {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.7);
+    padding: 4px 14px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .lang-selector button:hover { background: rgba(255,255,255,0.2); }
+  .lang-selector button.active { background: rgba(255,255,255,0.2); color: #fff; border-color: rgba(255,255,255,0.4); }
+  
+  .menu-btn {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    background: rgba(255,255,255,0.15);
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0 10px;
+    border-radius: 8px;
+  }
+  .mode-badge {
+    text-align: center;
+    padding: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(0,0,0,0.25);
+  }
+
+  .end-date-box {
+    background: #1a2a3a;
+    color: #F39C12;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 20px;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    margin: 0;
+  }
+  .end-date-box span { color: #fff; font-weight: 400; }
+
+  .bar {
+    background: #1e2a3a;
+    padding: 10px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  body.member-mode .bar .btn-new { display: none !important; }
+  .bar .btn-delete { display: inline-block !important; }
+  .bar select, .bar button {
+    padding: 8px 18px;
+    border-radius: 40px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .bar select { background: #fff; color: #1e2a3a; }
+  .bar button { background: #f39c12; color: #2c3e50; }
+  .bar button:hover { transform: scale(1.03); }
+
+  .mode-container {
+    background: #f1f5f9;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .mode-dropdown {
+    padding: 10px 20px;
+    border-radius: 40px;
+    border: 2px solid;
+    font-weight: 700;
+    cursor: pointer;
+    background: #fff;
+    font-size: 14px;
+  }
+  body.manager-mode .mode-dropdown { border-color: #1b4f72; color: #1b4f72; }
+  body.member-mode .mode-dropdown { border-color: #0f2b3d; color: #0f2b3d; }
+
+  .dashboard {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 24px 20px;
+  }
+  .stat {
+    border-radius: 28px;
+    padding: 20px 12px;
+    text-align: center;
+    color: #fff;
+    min-height: 140px;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    transition: 0.2s;
+    cursor: pointer;
+  }
+  .stat:hover { transform: translateY(-4px); }
+  body.manager-mode .stat:nth-child(1) { background: linear-gradient(145deg, #0f2b3d, #1b4f72); }
+  body.manager-mode .stat:nth-child(2) { background: linear-gradient(145deg, #c0392b, #e74c3c); }
+  body.manager-mode .stat:nth-child(3) { background: linear-gradient(145deg, #b7950b, #f39c12); }
+  body.manager-mode .stat:nth-child(4) { background: linear-gradient(145deg, #6c3483, #8e44ad); }
+  body.member-mode .stat { background: linear-gradient(145deg, #0f2b3d, #1b4f72) !important; }
+  .stat h3 { font-size: 32px; margin: 6px 0 2px; font-weight: 800; }
+  .stat p { font-size: 12px; opacity: 0.85; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 600; }
+  .stat-sub { font-size: 10px; opacity: 0.7; margin-top: 4px; }
+
+  .progress-simple { background: #fff; margin: 0 20px 20px; padding: 16px 20px; border-radius: 20px; }
+  .progress-bar { background: #e9ecef; border-radius: 40px; height: 24px; overflow: hidden; margin-top: 6px; }
+  .progress-fill { background: linear-gradient(90deg, #27ae60, #2ecc71); height: 100%; transition: width 0.4s; border-radius: 40px; }
+
+  .config {
+    background: #fff;
+    margin: 0 20px 20px;
+    padding: 24px;
+    border-radius: 28px;
+  }
+  body.member-mode .config { display: none !important; }
+  .config-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 16px;
+    align-items: center;
+  }
+  .config-row label { min-width: 180px; font-weight: 700; font-size: 14px; color: #2c3e50; }
+  .config-row input, .config-row select {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 40px;
+    border: 1.5px solid #dfe6e9;
+    font-size: 15px;
+  }
+  .config-row input:focus, .config-row select:focus { border-color: #1b4f72; outline: none; }
+  .btn-save {
+    background: linear-gradient(135deg, #1b4f72, #0f2b3d);
+    color: #fff;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 16px;
+    transition: 0.2s;
+  }
+  .btn-save:hover { transform: scale(1.02); }
+
+  .edit-settings-btn {
+    background: #f39c12;
+    color: #2c3e50;
+    padding: 8px 22px;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-weight: 700;
+    margin: 0 20px 10px;
+  }
+  body.member-mode .edit-settings-btn { display: none !important; }
+
+  .draw-buttons {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .draw-btn {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 40px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.2s;
+    font-size: 14px;
+  }
+  .draw-manual { background: #0f2b3d; color: #fff; }
+  .draw-computerized { background: #8e44ad; color: #fff; }
+  body.member-mode .draw-btn { display: none !important; }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    margin: 0 20px 20px;
+    padding: 8px 0;
+  }
+  .page-btn {
+    background: #0f2b3d;
+    color: #fff;
+    border: none;
+    padding: 8px 24px;
+    border-radius: 40px;
+    cursor: pointer;
+    font-weight: 700;
+    transition: 0.2s;
+  }
+  .page-btn:hover { background: #1b4f72; }
+
+  .table-wrapper {
+    margin: 0 20px 20px;
+    overflow-x: auto;
+    background: #fff;
+    border-radius: 24px;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    min-width: 650px;
+  }
+  th, td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #f1f3f5;
+    text-align: center;
+  }
+  th {
+    background: #f8f9fa;
+    position: sticky;
+    top: 0;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #495057;
+    z-index: 10;
+  }
+  .winner-row { background: #e6f9f0 !important; border-left: 4px solid #27ae60; }
+  .payment-overdue { background-color: #fce4e4 !important; }
+  .disabled-input {
+    background-color: #e9ecef !important;
+    color: #6c757d;
+    pointer-events: none;
+    opacity: 0.7;
+  }
+  .readonly-mode {
+    background: #f5f6f8 !important;
+    pointer-events: none !important;
+    color: #2c3e50;
+  }
+  .input-expected { color: #6c757d; font-weight: 300; }
+  input {
+    width: 70px;
+    padding: 6px 4px;
+    text-align: center;
+    border-radius: 12px;
+    border: 1.5px solid #dee2e6;
+    font-size: 13px;
+  }
+  input:focus { border-color: #1b4f72; outline: none; }
+  input:disabled { background-color: #e9ecef; color: #6c757d; cursor: not-allowed; opacity: 0.6; }
+  .sort-header { cursor: pointer; user-select: none; }
+  .sort-header:hover { background: #e9ecef; }
+
+  .manager-field {
+    background: #fff;
+    margin: 0 20px 20px;
+    padding: 16px 20px;
+    border-radius: 28px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  body.member-mode .manager-field { display: none !important; }
+  .manager-field label { font-weight: 700; color: #2c3e50; }
+  .manager-field input { flex: 1; padding: 10px 16px; border-radius: 40px; border: 1.5px solid #dfe6e9; min-width: 200px; }
+
+  .overdue-alert {
+    background: #fffbdd;
+    color: #8d6e00;
+    padding: 12px 20px;
+    margin: 0 20px 15px;
+    border-radius: 40px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    display: none;
+    border-left: 6px solid #f39c12;
+  }
+
+  .reminder-btn {
+    background: #25D366;
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  body.member-mode .reminder-btn { display: none !important; }
+
+  .footer-note {
+    text-align: center;
+    padding: 12px 20px;
+    font-size: 11px;
+    color: #adb5bd;
+    background: #0f2b3d;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    flex-direction: column;
+  }
+  .footer-note .azzem { font-size: 11px; font-weight: 300; color: #8e9eae; opacity: 0.8; }
+  .footer-note .badges { font-size: 11px; font-weight: 300; color: #8e9eae; opacity: 0.8; letter-spacing: 0.5px; }
+  .footer-note .badges span { margin: 0 6px; }
+  .backup-reminder {
+    background: #1a2a3a;
+    color: #ced4da;
+    font-size: 12px;
+    padding: 6px 20px;
+    text-align: center;
+    margin: 0;
+  }
+  .backup-reminder strong { color: #fff; }
+
+  .modal, .guide-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(6px);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+  }
+  .modal.active, .guide-modal.active { display: flex; }
+  .modal-content, .guide-content {
+    background: #fff;
+    border-radius: 40px;
+    padding: 30px;
+    max-width: 560px;
+    width: 92%;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .modal-content h3, .guide-content h2 { margin-bottom: 16px; color: #0f2b3d; }
+  .menu-section { margin-bottom: 14px; }
+  .menu-section h4 {
+    font-size: 14px;
+    color: #495057;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 6px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .menu-section button {
+    display: block;
+    width: 100%;
+    padding: 10px 16px;
+    margin: 4px 0;
+    border: none;
+    background: #f8f9fa;
+    border-radius: 30px;
+    text-align: left;
+    font-weight: 600;
+    color: #2c3e50;
+    cursor: pointer;
+  }
+  .menu-section button:hover { background: #e9ecef; }
+  .menu-section button .icon { margin-right: 10px; }
+  .folder-status {
+    display: none;
+  }
+  .lang-option {
+    display: inline-block;
+    padding: 10px 24px;
+    margin: 6px;
+    border-radius: 60px;
+    cursor: pointer;
+    border: 1.5px solid #dee2e6;
+    background: #fff;
+    font-weight: 600;
+  }
+  .lang-option:hover { background: #1b4f72; color: #fff; border-color: #1b4f72; }
+  .guide-text { font-size: 15px; line-height: 1.6; margin-top: 12px; color: #2c3e50; }
+  .guide-text h3 { color: #1b4f72; margin: 12px 0 4px; }
+  .guide-text ul { padding-left: 20px; margin: 6px 0; }
+  .guide-text li { margin-bottom: 4px; }
+  .guide-text .disclaimer {
+    background: #f8f9fa;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border-left: 4px solid #6c757d;
+    margin-top: 16px;
+    font-size: 14px;
+  }
+  .guide-text .mission {
+    font-family: 'Georgia', 'Merriweather', serif;
+    font-size: 18px;
+    line-height: 2;
+    color: #1e2a3a;
+    background: #fefefe;
+    padding: 20px 24px;
+    border-radius: 16px;
+    border-left: 6px solid #F39C12;
+    margin: 20px 0;
+    text-align: center;
+    font-weight: 400;
+    font-style: italic;
+  }
+  .guide-text .mission strong {
+    color: #0f2b3d;
+    font-weight: 700;
+  }
+  .guide-text .mission .line {
+    display: block;
+    margin: 2px 0;
+  }
+  .guide-text .mission .brand-line {
+    font-family: 'Segoe UI', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    color: #555;
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+  }
+  .guide-text .tip {
+    background: #e8f0fe;
+    padding: 12px 16px;
+    border-radius: 12px;
+    border-left: 4px solid #1b4f72;
+    margin: 10px 0;
+  }
+  .guide-text .dev-contact {
+    background: #f1f1f1;
+    padding: 12px 16px;
+    border-radius: 12px;
+    text-align: center;
+    margin: 16px 0 8px;
+    font-weight: 500;
+  }
+  .guide-text .dev-contact a {
+    color: #0f2b3d;
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .guide-text .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .guide-text .card-grid .card {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 12px 14px;
+    border: 1px solid #e9ecef;
+    text-align: center;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .guide-text .card-grid .card:hover { background: #e9ecef; }
+  .guide-text .card-grid .card .icon { font-size: 16px; font-weight: 700; display: block; margin-bottom: 2px; color: #0f2b3d; }
+  .guide-text .trust-badge {
+    background: #e8f5e9;
+    padding: 12px 16px;
+    border-radius: 12px;
+    text-align: center;
+    margin: 16px 0 8px;
+    color: #2e7d32;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .guide-text .trust-badge .badge-item { display: inline-block; margin: 0 8px; }
+  .guide-text .trust-badge .badge-item .check { color: #27ae60; }
+
+  .search-bar {
+    margin: 0 20px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .search-bar input {
+    flex: 1;
+    padding: 10px 16px;
+    border-radius: 40px;
+    border: 1.5px solid #dee2e6;
+    font-size: 14px;
+    min-width: 180px;
+  }
+  .search-bar input:focus { border-color: #1b4f72; outline: none; }
+
+  .custom-confirm {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+  }
+  .custom-confirm.active { display: flex; }
+  .custom-confirm-box {
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 30px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+  .custom-confirm-box .msg {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1e2a3a;
+    margin-bottom: 16px;
+    text-align: left;
+    white-space: pre-wrap;
+    word-break: break-word;
+    max-height: 50vh;
+    overflow-y: auto;
+  }
+  .custom-confirm-box .btn-group { display: flex; gap: 20px; justify-content: center; margin-top: 16px; }
+  .custom-confirm-box button {
+    padding: 10px 30px;
+    border: none;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+    min-width: 100px;
+  }
+  .custom-confirm-box .btn-ok { background: #27ae60; color: #fff; }
+  .custom-confirm-box .btn-ok:hover { transform: scale(1.05); }
+  .custom-confirm-box .btn-cancel { background: #e74c3c; color: #fff; }
+  .custom-confirm-box .btn-cancel:hover { transform: scale(1.05); }
+
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2c3e50;
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 40px;
+    font-weight: 600;
+    font-size: 14px;
+    z-index: 3000;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .toast.show { opacity: 1; }
+
+  /* Save Modal - HIGHEST Z-INDEX */
+  .save-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(8px);
+    z-index: 99999;
+    justify-content: center;
+    align-items: center;
+  }
+  .save-modal.active { display: flex; }
+  .save-content {
+    background: #fff;
+    border-radius: 40px;
+    padding: 35px;
+    max-width: 560px;
+    width: 92%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.5);
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .save-content h3 { 
+    margin-bottom: 16px; 
+    color: #0f2b3d; 
+    font-size: 24px;
+    text-align: center;
+  }
+  .save-preview {
+    background: #f8f9fa;
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin: 12px 0;
+  }
+  .save-preview .row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 14px;
+  }
+  .save-preview .row:last-child { border-bottom: none; }
+  .save-preview .label { font-weight: 600; color: #495057; }
+  .save-preview .value { color: #1e2a3a; font-family: monospace; word-break: break-all; }
+  .save-preview .file-icon { font-size: 48px; text-align: center; margin: 8px 0 16px; font-weight: 700; color: #0f2b3d; letter-spacing: 2px; }
+  .save-content .btn-group {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .save-content .btn-group button {
+    padding: 12px 36px;
+    border: none;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s;
+    min-width: 120px;
+  }
+  .save-content .btn-group .btn-save-confirm { background: #27ae60; color: #fff; }
+  .save-content .btn-group .btn-save-confirm:hover { transform: scale(1.05); background: #219a52; }
+  .save-content .btn-group .btn-save-cancel { background: #e74c3c; color: #fff; }
+  .save-content .btn-group .btn-save-cancel:hover { transform: scale(1.05); background: #c0392b; }
+
+  .print-report-content { display: none; }
+
+  /* Download Window Styles - For the popup window */
+  .download-window-body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #f0f2f5;
+    padding: 30px 20px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+  }
+  .download-window-box {
+    background: #fff;
+    border-radius: 24px;
+    padding: 40px 35px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    text-align: center;
+  }
+  .download-window-box .icon { font-size: 48px; margin-bottom: 12px; font-weight: 700; color: #0f2b3d; letter-spacing: 2px; }
+  .download-window-box h2 { color: #0f2b3d; margin-bottom: 8px; font-size: 24px; }
+  .download-window-box .sub { color: #6c757d; font-size: 14px; margin-bottom: 20px; }
+  .download-window-box .file-info {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 16px;
+    margin: 16px 0;
+    text-align: left;
+  }
+  .download-window-box .file-info .row {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    font-size: 14px;
+  }
+  .download-window-box .file-info .row .label { font-weight: 600; color: #495057; }
+  .download-window-box .file-info .row .value { color: #1e2a3a; word-break: break-all; }
+  .download-window-box .download-btn {
+    display: block;
+    background: #27ae60;
+    color: #fff;
+    padding: 18px 20px;
+    border: none;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 18px;
+    cursor: pointer;
+    margin: 12px auto 8px;
+    transition: 0.2s;
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+  }
+  .download-window-box .download-btn:hover { background: #219a52; transform: scale(1.02); }
+  .download-window-box .download-btn:active { transform: scale(0.97); background: #1e8a4a; }
+  .download-window-box .download-btn.success { background: #27ae60; cursor: default; }
+  .download-window-box .download-btn.success:hover { transform: none; }
+  .download-window-box .download-btn.failed { background: #e74c3c; cursor: default; }
+  .download-window-box .download-btn.failed:hover { transform: none; }
+  .download-window-box .instruction {
+    color: #6c757d;
+    font-size: 13px;
+    margin-top: 8px;
+  }
+  .download-window-box .instruction strong { color: #2c3e50; }
+  .download-window-box .btn-close-window {
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: 0.2s;
+  }
+  .download-window-box .btn-close-window:hover { background: #c0392b; }
+  .download-window-box .footer-text {
+    margin-top: 20px;
+    font-size: 12px;
+    color: #adb5bd;
+  }
+  .download-window-box .footer-text .brand { color: #0f2b3d; font-weight: 600; }
+  @media (max-width: 500px) {
+    .download-window-box { padding: 25px 18px; }
+    .download-window-box .download-btn { padding: 16px 20px; font-size: 16px; max-width: 100%; }
+    .download-window-box .file-info .row { font-size: 12px; flex-wrap: wrap; gap: 4px; }
+    .download-window-box h2 { font-size: 20px; }
+  }
+
+  @media print {
+    body { background: #fff; padding: 0; margin: 0; }
+    .container { max-width: 100%; border: none !important; box-shadow: none; border-radius: 0; background: #fff; }
+    .header { background: #0f2b3d !important; padding: 20px; }
+    .header h1 { font-size: 24px; }
+    .header .subtitle { font-size: 12px; }
+    .header .tagline { font-size: 11px; }
+    .lang-selector { display: none; }
+    .menu-btn { display: none; }
+    .mode-badge { display: none; }
+    .bar { display: none; }
+    .mode-container { display: none; }
+    .manager-field { display: none; }
+    .end-date-box { display: none; }
+    .backup-reminder { display: none; }
+    .dashboard { display: none; }
+    .progress-simple { display: none; }
+    .overdue-alert { display: none; }
+    .config { display: none; }
+    .edit-settings-btn { display: none; }
+    .search-bar { display: none; }
+    .draw-buttons { display: none; }
+    .pagination { display: none; }
+    .table-wrapper { display: none; }
+    .footer-note { display: none; }
+    .modal { display: none !important; }
+    .guide-modal { display: none !important; }
+    .save-modal { display: none !important; }
+    .custom-confirm { display: none !important; }
+    .toast { display: none !important; }
+  }
+
+  @media (max-width:700px) {
+    .dashboard { grid-template-columns: repeat(2,1fr); gap: 12px; padding: 16px; }
+    .config-row label { min-width: 100%; }
+    .stat { min-height: 120px; height: 120px; }
+    .stat h3 { font-size: 24px; }
+    .header h1 { font-size: 22px; }
+    .header .subtitle { font-size: 13px; }
+    .guide-text .card-grid { grid-template-columns: 1fr; }
+    .footer-note { flex-direction: column; gap: 4px; }
+    .lang-selector button { font-size: 10px; padding: 3px 10px; }
+    .save-preview .row { font-size: 12px; flex-wrap: wrap; gap: 4px; }
+    .save-content { padding: 20px; }
+    .save-content .btn-group { flex-wrap: wrap; }
+    .save-content .btn-group button { min-width: 100px; padding: 10px 20px; }
+  }
+</style>
+</head>
+<body class="manager-mode">
+
+<div class="container">
+  <div class="header">
+    <h1><span class="saath">SAATH</span> <span class="sahara">SAHARA</span></h1>
+    <div class="subtitle">
+      Interest-Free Committee Manager
+      <div class="tagline">saath sahara • ساتھ سہارا</div>
+      <div class="tagline" style="font-size:12px; margin-top:4px;">
+        Manage your <span class="beesi">BEESI</span>/<span class="kameti">KAMETI</span> with complete transparency-private, secure, offline, and always interest-free.
+      </div>
+    </div>
+    
+    <div class="lang-selector">
+      <button class="active" onclick="selectLanguage('en')">English</button>
+      <button onclick="selectLanguage('ur')">اردو</button>
+      <button onclick="selectLanguage('hi')">हिन्दी</button>
+      <button onclick="selectLanguage('bn')">বাংলা</button>
+    </div>
+    
+    <button class="menu-btn" onclick="showMenu()">☰</button>
+  </div>
+  <div id="modeBadge" class="mode-badge">[M] Manager Mode</div>
+
+  <div class="bar">
+    <select id="committeeSelect" onchange="switchCommittee()"></select>
+    <button class="btn-new" onclick="addCommittee()">+ New</button>
+    <button class="btn-delete" onclick="deleteCommittee()" style="background:#e74c3c; color:#fff;">x Delete</button>
+  </div>
+
+  <div class="mode-container">
+    <div class="mode-hint" id="modeHint"></div>
+    <select id="modeSelect" class="mode-dropdown" onchange="changeRole(this.value)">
+      <option value="manager">[M] Manager</option>
+      <option value="member">[V] Member (Read-only)</option>
+    </select>
+  </div>
+
+  <div class="manager-field"><label>Manager Name:</label><input type="text" id="managerNameInput" placeholder="e.g., Asad Ali" onchange="updateManagerName(this.value)"></div>
+
+  <div id="endDateBox" class="end-date-box">Committee End Date: <span id="endDateDisplay">Not calculated yet</span></div>
+
+  <div class="backup-reminder">
+    <strong>Daily Backup Reminder</strong><br>
+    Protect your committee data by creating a backup every day.
+  </div>
+
+  <div class="dashboard">
+    <div class="stat" id="statTotal"><p id="totalLabel">TOTAL POOL VALUE</p><h3 id="totalAmt">0</h3><div class="stat-sub" id="totalSub">Total amount per draw</div></div>
+    <div class="stat" id="statRemaining"><p id="remainingLabel">CURRENT DRAW BALANCE</p><h3 id="remainingAmt">0</h3><div class="stat-sub" id="remainingSub">Balance for current draw</div></div>
+    <div class="stat" id="statProgress"><p id="progressLabel">PROGRESS</p><h3 id="drawDone">0/0</h3><div class="stat-sub" id="progressSub">Winners / Total draws</div></div>
+    <div class="stat" id="statPer"><p id="perLabel">CONTRIBUTION PER MEMBER</p><h3 id="perMem">0</h3><div class="stat-sub" id="perSub">Contribution per draw</div></div>
+  </div>
+
+  <div class="progress-simple"><div>Committee Progress</div><div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div><div id="progressText" style="margin-top:6px; font-size:13px; font-weight:500;"></div></div>
+  <div id="overdueAlert" class="overdue-alert"></div>
+
+  <div id="setupPage" class="config">
+    <div class="config-row"><label id="startLabel">Start Date:</label><input type="date" id="startDate" min="1900-01-01"></div>
+    <div class="config-row"><label id="membersLabel">Total Members (1-500):</label><input type="number" id="memberCount" placeholder="e.g., 5" min="1" max="500"></div>
+    <div class="config-row"><label id="installLabel">Installment Amount (1-10M):</label><input type="number" id="installmentAmt" placeholder="e.g., 500" min="1" max="10000000"></div>
+    <div class="config-row"><label id="payFreqLabel">Payment Frequency:</label><select id="payFreq"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="10days">10 Days</option><option value="fortnightly">Fortnightly</option><option value="monthly">Monthly</option></select></div>
+    <div class="config-row"><label id="drawSchLabel">Draw Schedule:</label><select id="drawSch"><option value="weekly">Weekly</option><option value="10days">10 Days</option><option value="fortnightly">Fortnightly</option><option value="monthly" selected>Monthly</option></select></div>
+    <div class="config-row"><button class="btn-save" id="saveBtn" onclick="saveCommittee()">Save & Calculate</button></div>
+  </div>
+  <div id="editSettingsDiv" style="text-align:center; margin:0 20px 12px;"><button class="edit-settings-btn" onclick="toggleEditSettings()">[Edit Settings]</button></div>
+
+  <div class="search-bar"><input type="text" id="searchInput" placeholder="Search member name or WhatsApp..." oninput="filterTable()"></div>
+
+  <div class="draw-buttons"><button class="draw-btn draw-manual" id="manualBtn" onclick="manualDraw()">Manual Draw</button><button class="draw-btn draw-computerized" id="computerBtn" onclick="computerizedDraw()">Computerized Draw</button></div>
+
+  <div class="pagination"><button class="page-btn" id="prevBtn" onclick="changePage(-1)">Prev</button><span class="page-info" id="installmentPageInfo">Draw 1 / 1</span><button class="page-btn" id="nextBtn" onclick="changePage(1)">Next</button></div>
+
+  <div class="table-wrapper"><table id="memberTable"><thead id="tableHead"></thead><tbody id="tableBody"><tr><td colspan="10">Create committee to start.</td></tr></tbody></table></div>
+
+  <div class="footer-note">
+    <div class="azzem">© 2026 Azzem Logic</div>
+    <div class="badges">Private • Offline • Interest-Free</div>
+  </div>
+</div>
+
+<div class="custom-confirm" id="customConfirm">
+  <div class="custom-confirm-box">
+    <p id="confirmMessage" style="font-size:20px; font-weight:600; color:#1e2a3a; margin-bottom:20px;">You entered: 0</p>
+    <div class="btn-group">
+      <button class="btn-ok" id="confirmOk">OK</button>
+      <button class="btn-cancel" id="confirmCancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="custom-confirm" id="drawConfirm">
+  <div class="custom-confirm-box">
+    <div class="msg" id="drawConfirmMsg">Loading...</div>
+    <div class="btn-group">
+      <button class="btn-ok" id="drawConfirmOk">OK</button>
+      <button class="btn-cancel" id="drawConfirmCancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Save Modal -->
+<div class="save-modal" id="saveModal">
+  <div class="save-content">
+    <h3 id="saveModalTitle">Save File</h3>
+    <div class="save-preview" id="savePreview">
+      <div class="file-icon" id="fileIcon">[FILE]</div>
+      <div class="row"><span class="label">File Name:</span><span class="value" id="previewFileName">-</span></div>
+      <div class="row"><span class="label">File Type:</span><span class="value" id="previewFileType">-</span></div>
+      <div class="row"><span class="label">Committee:</span><span class="value" id="previewCommittee">-</span></div>
+      <div class="row"><span class="label">Mode:</span><span class="value" id="previewMode">-</span></div>
+      <div class="row"><span class="label">File Size:</span><span class="value" id="previewSize">-</span></div>
+      <div class="row"><span class="label">Save Location:</span><span class="value">Downloads Folder</span></div>
+    </div>
+    <div class="btn-group">
+      <button class="btn-save-cancel" id="saveModalCancel">Cancel</button>
+      <button class="btn-save-confirm" id="saveModalConfirm">Save</button>
+    </div>
+  </div>
+</div>
+
+<div id="menuModal" class="modal"><div class="modal-content"><h3>Menu</h3>
+  <div class="menu-section"><h4 id="manageTitle">Manage</h4>
+    <button onclick="backupToFolder()" id="backupBtn"><span class="icon">[B]</span> Backup</button>
+    <button onclick="restoreFromFolder()" id="restoreBtn"><span class="icon">[R]</span> Restore</button>
+    <button onclick="shareCommittee()" id="shareBtn"><span class="icon">[S]</span> Share Committee</button>
+    <button onclick="excelToFolder()" id="excelBtn"><span class="icon">[E]</span> Export Excel</button>
+  </div>
+  <div class="menu-section"><h4 id="committeeTitle">Committee</h4>
+    <button onclick="resetCommittee()" id="resetBtnM"><span class="icon">[X]</span> Reset Committee</button>
+    <button onclick="printReport()" id="printBtnM"><span class="icon">[P]</span> Print Report</button>
+    <button onclick="generateWinnerReport()" id="winnerReportBtn"><span class="icon">[W]</span> Print Winner Report</button>
+    <button onclick="generatePDFInvoice()" id="invoiceBtnM"><span class="icon">[I]</span> Print Invoice</button>
+  </div>
+  <div class="menu-section"><h4 id="notifyTitle">Notify</h4>
+    <button onclick="sendWhatsAppReminders()" id="waReminderBtn"><span class="icon">[W]</span> WhatsApp Reminders</button>
+  </div>
+  <div class="menu-section"><h4 id="settingsTitle">Settings</h4>
+    <button onclick="showLanguageModal()" id="langBtn"><span class="icon">[L]</span> Language</button>
+    <button onclick="showGuide()" id="guideBtn"><span class="icon">[?]</span> User Guide</button>
+  </div>
+  <button onclick="closeMenuModal()" id="closeMenuBtn">Close</button>
+</div></div>
+
+<div id="languageModal" class="modal"><div class="modal-content"><h2 id="langModalTitle">Select Language</h2><div class="lang-option" onclick="selectLanguage('en')">English</div><div class="lang-option" onclick="selectLanguage('hi')">हिन्दी</div><div class="lang-option" onclick="selectLanguage('ur')">اردو</div><div class="lang-option" onclick="selectLanguage('bn')">বাংলা</div><button onclick="closeLanguageModal()" id="closeLangBtn">Close</button></div></div>
+
+<div id="guideModal" class="guide-modal"><div class="guide-content"><span style="float:right;font-size:28px;cursor:pointer;line-height:1;" onclick="closeGuideModal()">&times;</span><h2 id="guideTitle">User Guide</h2><div style="margin-bottom:12px;"><span class="lang-option" onclick="switchGuideLang('en')">English</span><span class="lang-option" onclick="switchGuideLang('hi')">हिन्दी</span><span class="lang-option" onclick="switchGuideLang('ur')">اردو</span><span class="lang-option" onclick="switchGuideLang('bn')">বাংলা</span></div>
+  <div id="guideEn" class="guide-text">
+    <div class="mission">
+      <strong>Our Mission</strong><br>
+      <span class="line">Together, we turn small contributions into greater opportunities.</span>
+      <span class="line">Every contribution represents hope.</span>
+      <span class="line">Every commitment builds trust.</span>
+      <span class="line">Every successful committee strengthens families and communities.</span>
+      <br>
+      <span class="line"><strong>"Together we contribute. Together we grow. Together we succeed."</strong></span>
+      <span class="brand-line">Built on trust. Powered by community. Designed for everyone.</span>
+    </div>
+
+    <div class="card-grid" id="guideNav">
+      <div class="card" data-section="getting-started"><span class="icon">[1]</span> Getting Started</div>
+      <div class="card" data-section="manager-mode"><span class="icon">[2]</span> Manager Mode</div>
+      <div class="card" data-section="member-mode"><span class="icon">[3]</span> Member Mode</div>
+      <div class="card" data-section="payments"><span class="icon">[4]</span> Payments</div>
+      <div class="card" data-section="draws"><span class="icon">[5]</span> Draws</div>
+      <div class="card" data-section="reports"><span class="icon">[6]</span> Reports</div>
+      <div class="card" data-section="backup"><span class="icon">[7]</span> Backup & Restore</div>
+      <div class="card" data-section="legal"><span class="icon">[8]</span> Legal Notice</div>
+      <div class="card" data-section="contact"><span class="icon">[9]</span> Contact</div>
+    </div>
+
+    <h3 id="getting-started">What is SAATH SAHARA?</h3>
+    <p>This is a simple, offline tool to manage your committee (saving circle). It keeps track of all members, payments, draws, and winners.</p>
+    
+    <h3 id="manager-mode">Manager Mode</h3>
+    <p>Full control. You create the committee, add members, record payments, and declare winners (manual or computerized). You can also backup, restore, and share the committee data.</p>
+    
+    <h3 id="member-mode">Member Mode</h3>
+    <p>Read-only view. Members can see all payments and winners but cannot edit anything. They can only backup and restore shared committee files. Member can delete their own restored committees.</p>
+    
+    <h3 id="payments">Payment Frequency & Draw Schedule</h3>
+    <ul>
+      <li><strong>Payment Frequency:</strong> Daily, Weekly, 10 Days, Fortnightly, Monthly - how often members pay.</li>
+      <li><strong>Draw Schedule:</strong> Weekly, 10 Days, Fortnightly, Monthly - how often the draw happens.</li>
+    </ul>
+    <p><strong>Important:</strong> The app automatically calculates the correct number of payments per draw based on your selection.</p>
+
+    <div class="tip">
+      <strong>Tip:</strong> For smoother communication and quick reminders, we recommend creating a dedicated WhatsApp group for your committee members. This allows you to send payment reminders, draw announcements, and updates with just one tap - rather than contacting each member individually.
+    </div>
+    
+    <h3 id="backup">Backup & Restore</h3>
+    <ul>
+      <li><strong>Backup:</strong> Saves all your committee data as a .cex file. Always take a backup before making any major changes.</li>
+      <li><strong>Restore:</strong> Loads a previously saved .cex file.</li>
+      <li><strong>Share:</strong> Manager can create a .cex file for members to view.</li>
+    </ul>
+    <p><strong>Note:</strong> All backup, share, and export files are saved in your device's default <strong>"Downloads"</strong> folder.</p>
+    
+    <h3 id="draws">Daily Backup Reminder</h3>
+    <p>We recommend saving a backup at least once a day to avoid losing your data.</p>
+    
+    <h3 id="reports">Reports</h3>
+    <p>The app offers several detailed reports: Individual Member Statement, Winner Receipt, Specific Draw Report, Full Committee Closing Report, and a dedicated Winner Report. All reports are designed to look like official documents with signatures and dates.</p>
+    
+    <div class="disclaimer" id="legal">
+      <strong>Important Note:</strong> This app is a personal record-keeping tool. It is <strong>not a banking or financial institution</strong>. All data is stored locally. We recommend regular backups.
+      <br><br>
+      While every effort has been made to ensure reliable operation, users remain responsible for maintaining backups and for agreements made between committee members.
+      <br><br>
+      <em>Please ensure you comply with your local tax laws regarding any committee earnings or distributions, if applicable.</em>
+      <br><br>
+      <em>This app does not charge any fee, commission, or percentage for managing committees. If your committee decides to apply a management fee, it must be agreed upon by all members manually and transparently.</em>
+    </div>
+
+    <div class="dev-contact" id="contact">
+      <strong>Support</strong><br>
+      Email: <a href="mailto:Azzemlogic@gmail.com">Azzemlogic@gmail.com</a><br>
+      We welcome your feedback and suggestions to help improve SAATH SAHARA.
+    </div>
+
+    <div class="trust-badge">
+      <span class="badge-item"><span class="check">[✔]</span> 100% Offline</span>
+      <span class="badge-item"><span class="check">[Lock]</span> Private by Design</span>
+      <span class="badge-item"><span class="check">[X]</span> No Ads</span>
+      <span class="badge-item"><span class="check">[X]</span> No Tracking</span>
+      <span class="badge-item"><span class="check">[X]</span> No Subscription</span>
+      <br>
+      <span style="font-size:12px; color:#1e2a3a; display:block; margin-top:6px;">Version 1.0 - Built with privacy in mind.</span>
+    </div>
+  </div>
+  <div id="guideHi" class="guide-text" style="display:none;">
+    <div class="mission">
+      <strong>हमारा मिशन</strong><br>
+      <span class="line">हम छोटे योगदानों को बड़े अवसरों में बदलते हैं।</span>
+      <span class="line">हर योगदान आशा का प्रतीक है।</span>
+      <span class="line">हर वादा विश्वास का निर्माण करता है।</span>
+      <span class="line">हर सफल कमेटी परिवारों और समुदायों को मजबूत करती है।</span>
+      <br>
+      <span class="line"><strong>"साथ मिलकर योगदान करते हैं। साथ मिलकर बढ़ते हैं। साथ मिलकर सफल होते हैं।"</strong></span>
+      <span class="brand-line">विश्वास पर निर्मित। समुदाय द्वारा संचालित। सभी के लिए डिज़ाइन किया गया।</span>
+    </div>
+
+    <div class="card-grid" id="guideNavHi">
+      <div class="card" data-section="getting-started-hi"><span class="icon">[1]</span> आरंभ करें</div>
+      <div class="card" data-section="manager-mode-hi"><span class="icon">[2]</span> प्रबंधक मोड</div>
+      <div class="card" data-section="member-mode-hi"><span class="icon">[3]</span> सदस्य मोड</div>
+      <div class="card" data-section="payments-hi"><span class="icon">[4]</span> भुगतान</div>
+      <div class="card" data-section="draws-hi"><span class="icon">[5]</span> ड्रा</div>
+      <div class="card" data-section="reports-hi"><span class="icon">[6]</span> रिपोर्ट</div>
+      <div class="card" data-section="backup-hi"><span class="icon">[7]</span> बैकअप और रिस्टोर</div>
+      <div class="card" data-section="legal-hi"><span class="icon">[8]</span> कानूनी सूचना</div>
+      <div class="card" data-section="contact-hi"><span class="icon">[9]</span> संपर्क</div>
+    </div>
+
+    <h3 id="getting-started-hi">साथ सहारा - त्वरित मार्गदर्शिका</h3>
+    <p><strong>यह ऐप क्या है?</strong> यह एक सरल, ऑफलाइन टूल है जो आपकी कमेटी (बचत समूह) को मैनेज करने के लिए है।</p>
+    
+    <h3 id="manager-mode-hi">प्रबंधक मोड</h3>
+    <p>पूर्ण नियंत्रण। आप कमेटी बनाते हैं, सदस्य जोड़ते हैं, भुगतान रिकॉर्ड करते हैं, और विजेताओं की घोषणा करते हैं।</p>
+    
+    <h3 id="member-mode-hi">सदस्य मोड</h3>
+    <p>केवल पढ़ने के लिए। सदस्य सभी भुगतान और विजेता देख सकते हैं लेकिन कुछ भी संपादित नहीं कर सकते। वे बैकअप ले सकते हैं और शेयर की गई फाइलों को रिस्टोर कर सकते हैं। सदस्य अपनी रिस्टोर की गई कमेटी को डिलीट भी कर सकता है।</p>
+    
+    <h3 id="payments-hi">भुगतान आवृत्ति और ड्रा अनुसूची</h3>
+    <ul>
+      <li><strong>भुगतान आवृत्ति:</strong> दैनिक, साप्ताहिक, 10 दिन, पखवाड़ा, मासिक</li>
+      <li><strong>ड्रा अनुसूची:</strong> साप्ताहिक, 10 दिन, पखवाड़ा, मासिक</li>
+    </ul>
+
+    <div class="tip">
+      <strong>सुझाव:</strong> बेहतर संचार और त्वरित अनुस्मारक के लिए, हम अनुशंसा करते हैं कि आप अपनी कमेटी के सदस्यों के लिए एक समर्पित व्हाट्सएप समूह बनाएं।
+    </div>
+    
+    <h3 id="backup-hi">बैकअप और रिस्टोर</h3>
+    <ul>
+      <li><strong>बैकअप:</strong> .cex फाइल के रूप में सेव करता है</li>
+      <li><strong>रिस्टोर:</strong> पहले से सेव की गई .cex फाइल को लोड करता है</li>
+      <li><strong>शेयर:</strong> प्रबंधक सदस्यों के लिए .cex फाइल बना सकता है</li>
+    </ul>
+    <p><strong>नोट:</strong> सभी बैकअप, शेयर और एक्सपोर्ट फाइलें आपके डिवाइस के डिफ़ॉल्ट <strong>"Downloads"</strong> फोल्डर में सेव होती हैं।</p>
+    
+    <h3 id="draws-hi">दैनिक बैकअप अनुस्मारक</h3>
+    <p>हम अनुशंसा करते हैं कि अपना डेटा खोने से बचने के लिए दिन में कम से कम एक बार बैकअप लें।</p>
+    
+    <h3 id="reports-hi">रिपोर्ट</h3>
+    <p>ऐप कई विस्तृत रिपोर्ट प्रदान करता है: व्यक्तिगत सदस्य विवरण, विजेता रसीद, विशिष्ट ड्रा रिपोर्ट, और पूरी कमेटी की समाप्ति रिपोर्ट।</p>
+    
+    <div class="disclaimer" id="legal-hi">
+      <strong>महत्वपूर्ण:</strong> यह ऐप एक व्यक्तिगत रिकॉर्ड-कीपिंग टूल है। यह <strong>कोई बैंक या वित्तीय संस्थान नहीं है</strong>। सभी डेटा स्थानीय रूप से संग्रहीत है। नियमित बैकअप लें।
+      <br><br>
+      हालांकि विश्वसनीय संचालन सुनिश्चित करने के लिए हर संभव प्रयास किया गया है, उपयोगकर्ता बैकअप बनाए रखने और समिति के सदस्यों के बीच किए गए समझौतों के लिए जिम्मेदार हैं।
+      <br><br>
+      <em>कृपया सुनिश्चित करें कि आप किसी भी कमेटी आय या वितरण के संबंध में अपने स्थानीय कर कानूनों का पालन करते हैं, यदि लागू हो।</em>
+      <br><br>
+      <em>यह ऐप कमेटी के प्रबंधन के लिए कोई शुल्क, कमीशन, या प्रतिशत नहीं लेती है। यदि आपकी कमेटी प्रबंधन शुल्क लागू करना चाहती है, तो इसे सभी सदस्यों के बीच पारदर्शी रूप से सहमत होना चाहिए।</em>
+    </div>
+
+    <div class="dev-contact" id="contact-hi">
+      <strong>सहायता</strong><br>
+      Email: <a href="mailto:Azzemlogic@gmail.com">Azzemlogic@gmail.com</a><br>
+      हम आपकी प्रतिक्रिया और सुझावों का स्वागत करते हैं।
+    </div>
+
+    <div class="trust-badge">
+      <span class="badge-item"><span class="check">[✔]</span> 100% ऑफलाइन</span>
+      <span class="badge-item"><span class="check">[Lock]</span> डिज़ाइन द्वारा निजी</span>
+      <span class="badge-item"><span class="check">[X]</span> कोई विज्ञापन नहीं</span>
+      <span class="badge-item"><span class="check">[X]</span> कोई ट्रैकिंग नहीं</span>
+      <span class="badge-item"><span class="check">[X]</span> कोई सब्सक्रिप्शन नहीं</span>
+      <br>
+      <span style="font-size:12px; color:#1e2a3a; display:block; margin-top:6px;">संस्करण 1.0 - गोपनीयता को ध्यान में रखकर बनाया गया।</span>
+    </div>
+  </div>
+  <div id="guideUr" class="guide-text" style="display:none;">
+    <div class="mission">
+      <strong>ہمارا مشن</strong><br>
+      <span class="line">ہم چھوٹی چھوٹی شراکتوں کو بڑے مواقع میں تبدیل کرتے ہیں۔</span>
+      <span class="line">ہر شراکت امید کی علامت ہے۔</span>
+      <span class="line">ہر عہد اعتماد کی تعمیر کرتا ہے۔</span>
+      <span class="line">ہر کامیاب کمیٹی خاندانوں اور کمیونٹیز کو مضبوط کرتی ہے۔</span>
+      <br>
+      <span class="line"><strong>"مل کر تعاون کرتے ہیں۔ مل کر بڑھتے ہیں۔ مل کر کامیاب ہوتے ہیں۔"</strong></span>
+      <span class="brand-line">اعتماد پر مبنی۔ کمیونٹی سے چلنے والا۔ سب کے لیے ڈیزائن کیا گیا۔</span>
+    </div>
+
+    <div class="card-grid" id="guideNavUr">
+      <div class="card" data-section="getting-started-ur"><span class="icon">[1]</span> آغاز کریں</div>
+      <div class="card" data-section="manager-mode-ur"><span class="icon">[2]</span> مینیجر موڈ</div>
+      <div class="card" data-section="member-mode-ur"><span class="icon">[3]</span> ممبر موڈ</div>
+      <div class="card" data-section="payments-ur"><span class="icon">[4]</span> ادائیگیاں</div>
+      <div class="card" data-section="draws-ur"><span class="icon">[5]</span> ڈرا</div>
+      <div class="card" data-section="reports-ur"><span class="icon">[6]</span> رپورٹس</div>
+      <div class="card" data-section="backup-ur"><span class="icon">[7]</span> بیک اپ اور ریسٹور</div>
+      <div class="card" data-section="legal-ur"><span class="icon">[8]</span> قانونی نوٹس</div>
+      <div class="card" data-section="contact-ur"><span class="icon">[9]</span> رابطہ</div>
+    </div>
+
+    <h3 id="getting-started-ur">ساتھ سہارا - فوری رہنمائی</h3>
+    <p><strong>یہ ایپ کیا ہے؟</strong> یہ ایک سادہ، آف لائن ٹول ہے جو آپ کی کمیٹی (بچت گروپ) کو منظم کرنے کے لیے ہے۔</p>
+    
+    <h3 id="manager-mode-ur">مینیجر موڈ</h3>
+    <p>مکمل کنٹرول۔ آپ کمیٹی بناتے ہیں، ممبران شامل کرتے ہیں، ادائیگیاں ریکارڈ کرتے ہیں، اور فاتحین کا اعلان کرتے ہیں۔</p>
+    
+    <h3 id="member-mode-ur">ممبر موڈ</h3>
+    <p>صرف پڑھنے کے لیے۔ ممبران تمام ادائیگیاں اور فاتحین دیکھ سکتے ہیں لیکن کوئی ترمیم نہیں کر سکتے۔ وہ بیک اپ لے سکتے ہیں اور شئیر کی گئی فائلوں کو ریسٹور کر سکتے ہیں۔ ممبر اپنی ریسٹور کردہ کمیٹی کو ڈیلیٹ بھی کر سکتا ہے۔</p>
+    
+    <h3 id="payments-ur">ادائیگی کی فریکوئنسی اور ڈرا شیڈول</h3>
+    <ul>
+      <li><strong>ادائیگی کی فریکوئنسی:</strong> روزانہ، ہفتہ وار، 10 دن، پندرہ روزہ، ماہانہ</li>
+      <li><strong>ڈرا شیڈول:</strong> ہفتہ وار، 10 دن، پندرہ روزہ، ماہانہ</li>
+    </ul>
+
+    <div class="tip">
+      <strong>مشورہ:</strong> بہتر مواصلت اور فوری یاد دہانیوں کے لیے، ہم تجویز کرتے ہیں کہ آپ اپنی کمیٹی کے ممبران کے لیے ایک علیحدہ واٹس ایپ گروپ بنائیں۔
+    </div>
+    
+    <h3 id="backup-ur">بیک اپ اور ریسٹور</h3>
+    <ul>
+      <li><strong>بیک اپ:</strong> .cex فائل کے طور پر محفوظ کرتا ہے</li>
+      <li><strong>ریسٹور:</strong> پہلے سے محفوظ کردہ .cex فائل کو لوڈ کرتا ہے</li>
+      <li><strong>شیئر:</strong> مینیجر ممبران کے لیے .cex فائل بنا سکتا ہے</li>
+    </ul>
+    <p><strong>نوٹ:</strong> تمام بیک اپ، شئیر اور ایکسپورٹ فائلیں آپ کے ڈیوائس کے ڈیفالٹ <strong>"Downloads"</strong> فولڈر میں محفوظ ہوتی ہیں۔</p>
+    
+    <h3 id="draws-ur">روزانہ بیک اپ کی یاد دہانی</h3>
+    <p>ہم تجویز کرتے ہیں کہ اپنا ڈیٹا کھونے سے بچنے کے لیے دن میں کم از کم ایک بار بیک اپ لیں۔</p>
+    
+    <h3 id="reports-ur">رپورٹس</h3>
+    <p>ایپ کئی تفصیلی رپورٹس فراہم کرتی ہے: انفرادی ممبر کا بیان، فاتح کی رسید، مخصوص ڈرا رپورٹ، اور پوری کمیٹی کی اختتامی رپورٹ۔</p>
+    
+    <div class="disclaimer" id="legal-ur">
+      <strong>اہم نوٹ:</strong> یہ ایپ ایک ذاتی ریکارڈ رکھنے کا آلہ ہے۔ یہ <strong>کوئی بینک یا مالیاتی ادارہ نہیں ہے</strong>۔ تمام ڈیٹا مقامی طور پر محفوظ ہے۔ باقاعدہ بیک اپ لیں۔
+      <br><br>
+      اگرچہ قابل اعتماد آپریشن کو یقینی بنانے کے لیے ہر ممکن کوشش کی گئی ہے، صارفین بیک اپ کو برقرار رکھنے اور کمیٹی کے ممبران کے درمیان کیے گئے معاہدوں کے ذمہ دار ہیں۔
+      <br><br>
+      <em>براہ کرم یقینی بنائیں کہ آپ کسی بھی کمیٹی کی آمدنی یا تقسیم کے سلسلے میں اپنے مقامی ٹیکس قوانین کی تعمیل کرتے ہیں، اگر قابل اطلاق ہو۔</em>
+      <br><br>
+      <em>یہ ایپ کمیٹیوں کے انتظام کے لیے کوئی فیس، کمیشن، یا فی صد نہیں لیتی۔ اگر آپ کی کمیٹی انتظامی فیس لگانا چاہتی ہے، تو یہ تمام ممبران کے درمیان باہمی رضامندی سے طے کیا جانا چاہیے۔</em>
+    </div>
+
+    <div class="dev-contact" id="contact-ur">
+      <strong>معاونت</strong><br>
+      Email: <a href="mailto:Azzemlogic@gmail.com">Azzemlogic@gmail.com</a><br>
+      ہم آپ کے تبصروں اور تجاویز کا خیرمقدم کرتے ہیں۔
+    </div>
+
+    <div class="trust-badge">
+      <span class="badge-item"><span class="check">[✔]</span> 100% آف لائن</span>
+      <span class="badge-item"><span class="check">[Lock]</span> ڈیزائن کے ذریعے نجی</span>
+      <span class="badge-item"><span class="check">[X]</span> کوئی اشتہار نہیں</span>
+      <span class="badge-item"><span class="check">[X]</span> کوئی ٹریکنگ نہیں</span>
+      <span class="badge-item"><span class="check">[X]</span> کوئی سبسکرپشن نہیں</span>
+      <br>
+      <span style="font-size:12px; color:#1e2a3a; display:block; margin-top:6px;">ورژن 1.0 - رازداری کے پیش نظر بنایا گیا۔</span>
+    </div>
+  </div>
+  <div id="guideBn" class="guide-text" style="display:none;">
+    <div class="mission">
+      <strong>আমাদের লক্ষ্য</strong><br>
+      <span class="line">আমরা ছোট অবদানগুলিকে বড় সুযোগে পরিণত করি।</span>
+      <span class="line">প্রতিটি অবদান আশার প্রতীক।</span>
+      <span class="line">প্রতিটি অঙ্গীকার বিশ্বাস তৈরি করে।</span>
+      <span class="line">প্রতিটি সফল কমিটি পরিবার ও সম্প্রদায়কে শক্তিশালী করে।</span>
+      <br>
+      <span class="line"><strong>"একসাথে আমরা অবদান রাখি। একসাথে আমরা বাড়ি। একসাথে আমরা সফল হই।"</strong></span>
+      <span class="brand-line">বিশ্বাসের উপর নির্মিত। সম্প্রদায় দ্বারা চালিত। সবার জন্য ডিজাইন করা।</span>
+    </div>
+
+    <div class="card-grid" id="guideNavBn">
+      <div class="card" data-section="getting-started-bn"><span class="icon">[1]</span> শুরু করুন</div>
+      <div class="card" data-section="manager-mode-bn"><span class="icon">[2]</span> ম্যানেজার মোড</div>
+      <div class="card" data-section="member-mode-bn"><span class="icon">[3]</span> সদস্য মোড</div>
+      <div class="card" data-section="payments-bn"><span class="icon">[4]</span> পেমেন্ট</div>
+      <div class="card" data-section="draws-bn"><span class="icon">[5]</span> ড্র</div>
+      <div class="card" data-section="reports-bn"><span class="icon">[6]</span> রিপোর্ট</div>
+      <div class="card" data-section="backup-bn"><span class="icon">[7]</span> ব্যাকআপ ও রিস্টোর</div>
+      <div class="card" data-section="legal-bn"><span class="icon">[8]</span> আইনি নোটিশ</div>
+      <div class="card" data-section="contact-bn"><span class="icon">[9]</span> যোগাযোগ</div>
+    </div>
+
+    <h3 id="getting-started-bn">সাথ সাহারা - দ্রুত নির্দেশিকা</h3>
+    <p><strong>এই অ্যাপটি কী?</strong> এটি আপনার কমিটি (সঞ্চয় চক্র) পরিচালনার জন্য একটি সহজ, অফলাইন টুল।</p>
+    
+    <h3 id="manager-mode-bn">ম্যানেজার মোড</h3>
+    <p>পূর্ণ নিয়ন্ত্রণ। আপনি কমিটি তৈরি করেন, সদস্য যুক্ত করেন, পেমেন্ট রেকর্ড করেন এবং বিজয়ী ঘোষণা করেন।</p>
+    
+    <h3 id="member-mode-bn">সদস্য মোড</h3>
+    <p>শুধুমাত্র পড়ার জন্য। সদস্যরা সব পেমেন্ট এবং বিজয়ী দেখতে পারেন কিন্তু কিছু সম্পাদনা করতে পারেন না। তারা শুধু ব্যাকআপ নিতে পারেন এবং শেয়ার করা ফাইল রিস্টোর করতে পারেন। সদস্য তাদের নিজের রিস্টোর করা কমিটি ডিলিট করতে পারেন।</p>
+    
+    <h3 id="payments-bn">পেমেন্ট ফ্রিকোয়েন্সি এবং ড্র শিডিউল</h3>
+    <ul>
+      <li><strong>পেমেন্ট ফ্রিকোয়েন্সি:</strong> দৈনিক, সাপ্তাহিক, ১০ দিন, পাক্ষিক, মাসিক</li>
+      <li><strong>ড্র শিডিউল:</strong> সাপ্তাহিক, ১০ দিন, পাক্ষিক, মাসিক</li>
+    </ul>
+
+    <div class="tip">
+      <strong>পরামর্শ:</strong> সহজ যোগাযোগ এবং দ্রুত রিমাইন্ডারের জন্য, আমরা আপনার কমিটি সদস্যদের জন্য একটি ডেডিকেটেড হোয়াটসঅ্যাপ গ্রুপ তৈরি করার পরামর্শ দিই।
+    </div>
+    
+    <h3 id="backup-bn">ব্যাকআপ এবং রিস্টোর</h3>
+    <ul>
+      <li><strong>ব্যাকআপ:</strong> আপনার সব কমিটি ডেটা .cex ফাইল হিসেবে সংরক্ষণ করে।</li>
+      <li><strong>রিস্টোর:</strong> পূর্বে সংরক্ষিত .cex ফাইল লোড করে।</li>
+      <li><strong>শেয়ার:</strong> ম্যানেজার সদস্যদের জন্য .cex ফাইল তৈরি করতে পারেন।</li>
+    </ul>
+    <p><strong>নোট:</strong> সব ব্যাকআপ, শেয়ার এবং এক্সপোর্ট ফাইল আপনার ডিভাইসের ডিফল্ট <strong>"Downloads"</strong> ফোল্ডারে সংরক্ষিত হয়।</p>
+    
+    <h3 id="draws-bn">দৈনিক ব্যাকআপ রিমাইন্ডার</h3>
+    <p>আমরা আপনার ডেটা হারানো এড়াতে দিনে অন্তত একবার ব্যাকআপ নেওয়ার পরামর্শ দিই।</p>
+    
+    <h3 id="reports-bn">রিপোর্ট</h3>
+    <p>অ্যাপটি বিভিন্ন বিস্তারিত রিপোর্ট অফার করে: স্বতন্ত্র সদস্য বিবৃতি, বিজয়ী রসিদ, নির্দিষ্ট ড্র রিপোর্ট, এবং সম্পূর্ণ কমিটি সমাপনী রিপোর্ট।</p>
+    
+    <div class="disclaimer" id="legal-bn">
+      <strong>গুরুত্বপূর্ণ নোট:</strong> এই অ্যাপটি একটি ব্যক্তিগত রেকর্ড-কিপিং টুল। এটি <strong>কোনো ব্যাংক বা আর্থিক প্রতিষ্ঠান নয়</strong>। সব ডেটা লোকালি সংরক্ষিত। আমরা নিয়মিত ব্যাকআপ নেওয়ার পরামর্শ দিই।
+      <br><br>
+      নির্ভরযোগ্য অপারেশন নিশ্চিত করার জন্য প্রতিটি প্রচেষ্টা করা হয়েছে, তবুও ব্যবহারকারীরা ব্যাকআপ বজায় রাখার এবং কমিটি সদস্যদের মধ্যে চুক্তির জন্য দায়ী।
+      <br><br>
+      <em>আপনার স্থানীয় ট্যাক্স আইন মেনে চলুন, যদি প্রযোজ্য হয়।</em>
+      <br><br>
+      <em>এই অ্যাপ কমিটি পরিচালনার জন্য কোনো ফি, কমিশন বা শতাংশ চার্জ করে না। যদি আপনার কমিটি একটি ব্যবস্থাপনা ফি প্রয়োগ করতে চায়, তবে তা সকল সদস্যের মধ্যে স্বচ্ছভাবে সম্মত হতে হবে।</em>
+    </div>
+
+    <div class="dev-contact" id="contact-bn">
+      <strong>সহায়তা</strong><br>
+      Email: <a href="mailto:Azzemlogic@gmail.com">Azzemlogic@gmail.com</a><br>
+      আমরা আপনার মতামত এবং পরামর্শকে স্বাগত জানাই।
+    </div>
+
+    <div class="trust-badge">
+      <span class="badge-item"><span class="check">[✔]</span> ১০০% অফলাইন</span>
+      <span class="badge-item"><span class="check">[Lock]</span> ডিজাইনে প্রাইভেট</span>
+      <span class="badge-item"><span class="check">[X]</span> কোন বিজ্ঞাপন নেই</span>
+      <span class="badge-item"><span class="check">[X]</span> কোন ট্র্যাকিং নেই</span>
+      <span class="badge-item"><span class="check">[X]</span> কোন সাবস্ক্রিপশন নেই</span>
+      <br>
+      <span style="font-size:12px; color:#1e2a3a; display:block; margin-top:6px;">সংস্করণ ১.০ - গোপনীয়তাকে প্রাধান্য দিয়ে তৈরি।</span>
+    </div>
+  </div>
+  <button onclick="closeGuideModal()" style="margin-top:16px; padding:10px 24px; border:none; background:#0f2b3d; color:#fff; border-radius:40px; font-weight:700; cursor:pointer;">Close</button>
+</div></div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+// ============================================================
+// SOUND SYSTEM
+// ============================================================
+let audioCtx = null;
+let audioUnlocked = false;
+
+function initAudio() {
+  if (audioUnlocked) return;
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    audioUnlocked = true;
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+  } catch(e) { console.log('Audio not supported'); }
+}
+
+document.addEventListener('click', initAudio, { once: false });
+document.addEventListener('touchstart', initAudio, { once: false });
+
+function playSound(type) {
+  if (!audioUnlocked) {
+    try {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      audioUnlocked = true;
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    } catch(e) { return; }
+  }
+  try {
+    if (!audioCtx) return;
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const now = audioCtx.currentTime;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.type = 'sine';
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.5);
+    if (type === 'save') {
+      osc.frequency.setValueAtTime(880, now);
+      osc.start(now);
+      osc.stop(now + 0.15);
+    } else if (type === 'success') {
+      osc.frequency.setValueAtTime(523.25, now);
+      osc.frequency.setValueAtTime(659.25, now + 0.12);
+      osc.start(now);
+      osc.stop(now + 0.3);
+    } else if (type === 'error') {
+      osc.frequency.setValueAtTime(220, now);
+      osc.start(now);
+      osc.stop(now + 0.4);
+    } else {
+      osc.frequency.setValueAtTime(600, now);
+      osc.start(now);
+      osc.stop(now + 0.1);
+    }
+    setTimeout(() => { try { audioCtx.close(); } catch(e){} }, 600);
+  } catch(e) { console.log('Sound error:', e); }
+}
+
+// ============================================================
+// MULTI-LANGUAGE TEXTS
+// ============================================================
+const texts = {
+  en: {
+    appTitle: 'SAATH SAHARA',
+    footerNote: 'Manager=Full | Member=Read-only',
+    modeManager: 'Manager',
+    modeMember: 'Member',
+    winner: 'Winner',
+    active: 'Active',
+    notPaid: 'Not paid',
+    overduePrefix: 'Overdue Payments: ',
+    select: 'Select',
+    backupReminder: 'Daily Backup Reminder - Keep your committee running smoothly, save your backup daily.',
+    totalLabel: 'TOTAL POOL VALUE',
+    totalSub: 'Total amount per draw',
+    remainingLabel: 'CURRENT DRAW BALANCE',
+    remainingSub: 'Balance for current draw',
+    progressLabel: 'PROGRESS',
+    progressSub: 'Winners / Total draws',
+    perLabel: 'CONTRIBUTION PER MEMBER',
+    perSub: 'Contribution per draw',
+    startLabel: 'Start Date:',
+    membersLabel: 'Total Members (1-500):',
+    installLabel: 'Installment Amount (1-10M):',
+    payFreqLabel: 'Payment Frequency:',
+    drawSchLabel: 'Draw Schedule:',
+    saveBtn: 'Save & Calculate',
+    manualBtn: 'Manual Draw',
+    computerBtn: 'Computerized Draw',
+    prevBtn: 'Prev',
+    nextBtn: 'Next',
+    manageTitle: 'Manage',
+    committeeTitle: 'Committee',
+    notifyTitle: 'Notify',
+    settingsTitle: 'Settings',
+    backupBtn: 'Backup',
+    restoreBtn: 'Restore',
+    shareBtn: 'Share Committee',
+    excelBtn: 'Export Excel',
+    resetBtnM: 'Reset Committee',
+    printBtnM: 'Print Report',
+    winnerReportBtn: 'Print Winner Report',
+    invoiceBtnM: 'Print Invoice',
+    waReminderBtn: 'WhatsApp Reminders',
+    langBtn: 'Language',
+    guideBtn: 'User Guide',
+    closeMenuBtn: 'Close',
+    langModalTitle: 'Select Language',
+    closeLangBtn: 'Close',
+    guideTitle: 'User Guide',
+  },
+  hi: {
+    appTitle: 'साथ सहारा',
+    footerNote: 'प्रबंधक=पूर्ण | सदस्य=केवल पढ़ें',
+    modeManager: 'प्रबंधक',
+    modeMember: 'सदस्य',
+    winner: 'विजेता',
+    active: 'सक्रिय',
+    notPaid: 'भुगतान नहीं',
+    overduePrefix: 'बकाया भुगतान: ',
+    select: 'चुनें',
+    backupReminder: 'दैनिक बैकअप अनुस्मारक - अपनी कमेटी को सुचारू रूप से चलाए रखें, प्रतिदिन बैकअप सहेजें।',
+    totalLabel: 'कुल पूल राशि',
+    totalSub: 'प्रति ड्रा कुल राशि',
+    remainingLabel: 'वर्तमान ड्रा शेष',
+    remainingSub: 'वर्तमान ड्रा की शेष राशि',
+    progressLabel: 'प्रगति',
+    progressSub: 'विजेता / कुल ड्रा',
+    perLabel: 'प्रति सदस्य योगदान',
+    perSub: 'एक ड्रा में सदस्य की किस्त',
+    startLabel: 'प्रारंभ तिथि:',
+    membersLabel: 'कुल सदस्य (1-500):',
+    installLabel: 'किस्त राशि (1-10M):',
+    payFreqLabel: 'भुगतान आवृत्ति:',
+    drawSchLabel: 'ड्रा अवधि:',
+    saveBtn: 'सहेजें और गणना करें',
+    manualBtn: 'मैन्युअल ड्रा',
+    computerBtn: 'कंप्यूटरीकृत ड्रा',
+    prevBtn: 'पिछला',
+    nextBtn: 'अगला',
+    manageTitle: 'प्रबंधन',
+    committeeTitle: 'कमेटी',
+    notifyTitle: 'सूचनाएँ',
+    settingsTitle: 'सेटिंग्स',
+    backupBtn: 'बैकअप',
+    restoreBtn: 'पुनर्स्थापित करें',
+    shareBtn: 'सदस्यों के साथ साझा करें',
+    excelBtn: 'एक्सेल निर्यात',
+    resetBtnM: 'कमेटी रीसेट करें',
+    printBtnM: 'रिपोर्ट प्रिंट करें',
+    winnerReportBtn: 'विजेता रिपोर्ट प्रिंट करें',
+    invoiceBtnM: 'इनवॉइस प्रिंट करें',
+    waReminderBtn: 'व्हाट्सएप रिमाइंडर',
+    langBtn: 'भाषा',
+    guideBtn: 'उपयोगकर्ता गाइड',
+    closeMenuBtn: 'बंद करें',
+    langModalTitle: 'भाषा चुनें',
+    closeLangBtn: 'बंद करें',
+    guideTitle: 'उपयोगकर्ता गाइड',
+  },
+  ur: {
+    appTitle: 'ساتھ سہارا',
+    footerNote: 'مینیجر=مکمل | ممبر=صرف پڑھیں',
+    modeManager: 'مینیجر',
+    modeMember: 'ممبر',
+    winner: 'فاتح',
+    active: 'فعال',
+    notPaid: 'ادائیگی نہیں',
+    overduePrefix: 'بقایا ادائیگیاں: ',
+    select: 'منتخب کریں',
+    backupReminder: 'یاد دہانی: روزانہ بیک اپ - اپنی کمیٹی کو بغیر رکاوٹ جاری رکھیں، روزانہ بیک اپ محفوظ کریں۔',
+    totalLabel: 'کل پول کی رقم',
+    totalSub: 'فی ڈرا کل رقم',
+    remainingLabel: 'موجودہ ڈرا بیلنس',
+    remainingSub: 'موجودہ ڈرا میں باقی رقم',
+    progressLabel: 'پیشرفت',
+    progressSub: 'فاتحین / کل ڈرا',
+    perLabel: 'فی ممبر تعاون',
+    perSub: 'ایک ڈرا میں ممبر کی قسط',
+    startLabel: 'شروع کی تاریخ:',
+    membersLabel: 'کل ممبران (1-500):',
+    installLabel: 'قسط کی رقم (1-10M):',
+    payFreqLabel: 'قسط کی ادائیگی کا وقفہ:',
+    drawSchLabel: 'ڈرا کی مدت کا وقفہ:',
+    saveBtn: 'محفوظ کریں اور حساب کتاب کریں',
+    manualBtn: 'دستی ڈرا',
+    computerBtn: 'خودکار ڈرا',
+    prevBtn: 'پچھلا',
+    nextBtn: 'اگلا',
+    manageTitle: 'منظم کریں',
+    committeeTitle: 'کمیٹی',
+    notifyTitle: 'اطلاعات',
+    settingsTitle: 'ترتیبات',
+    backupBtn: 'بیک اپ',
+    restoreBtn: 'بحال کریں',
+    shareBtn: 'ممبران کے ساتھ شئیر کریں',
+    excelBtn: 'ایکسل ایکسپورٹ',
+    resetBtnM: 'کمیٹی ری سیٹ کریں',
+    printBtnM: 'رپورٹ پرنٹ کریں',
+    winnerReportBtn: 'فاتح رپورٹ پرنٹ کریں',
+    invoiceBtnM: 'انوائس پرنٹ کریں',
+    waReminderBtn: 'واٹس ایپ ریمائنڈر',
+    langBtn: 'زبان',
+    guideBtn: 'صارف گائیڈ',
+    closeMenuBtn: 'بند کریں',
+    langModalTitle: 'زبان منتخب کریں',
+    closeLangBtn: 'بند کریں',
+    guideTitle: 'صارف گائیڈ',
+  },
+  bn: {
+    appTitle: 'সাথ সাহারা',
+    footerNote: 'ম্যানেজার=সম্পূর্ণ | সদস্য=শুধু পড়া',
+    modeManager: 'ম্যানেজার',
+    modeMember: 'সদস্য',
+    winner: 'বিজয়ী',
+    active: 'সক্রিয়',
+    notPaid: 'পরিশোধ করা হয়নি',
+    overduePrefix: 'বকেয়া পেমেন্ট: ',
+    select: 'নির্বাচন করুন',
+    backupReminder: 'দৈনিক ব্যাকআপ রিমাইন্ডার - আপনার কমিটি সুষ্ঠুভাবে চালান, প্রতিদিন ব্যাকআপ নিন।',
+    totalLabel: 'মোট পুলের মান',
+    totalSub: 'প্রতি ড্র মোট পরিমাণ',
+    remainingLabel: 'বর্তমান ড্র ব্যালেন্স',
+    remainingSub: 'বর্তমান ড্রের জন্য ব্যালেন্স',
+    progressLabel: 'অগ্রগতি',
+    progressSub: 'বিজয়ী / মোট ড্র',
+    perLabel: 'প্রতি সদস্য অবদান',
+    perSub: 'প্রতি ড্র অবদান',
+    startLabel: 'শুরু তারিখ:',
+    membersLabel: 'মোট সদস্য (1-500):',
+    installLabel: 'কিস্তির পরিমাণ (1-10M):',
+    payFreqLabel: 'পেমেন্ট ফ্রিকোয়েন্সি:',
+    drawSchLabel: 'ড্র শিডিউল:',
+    saveBtn: 'সংরক্ষণ ও গণনা',
+    manualBtn: 'ম্যানুয়াল ড্র',
+    computerBtn: 'কম্পিউটারাইজড ড্র',
+    prevBtn: 'পূর্ববর্তী',
+    nextBtn: 'পরবর্তী',
+    manageTitle: 'পরিচালনা',
+    committeeTitle: 'কমিটি',
+    notifyTitle: 'বিজ্ঞপ্তি',
+    settingsTitle: 'সেটিংস',
+    backupBtn: 'ব্যাকআপ',
+    restoreBtn: 'পুনরুদ্ধার',
+    shareBtn: 'কমিটি শেয়ার',
+    excelBtn: 'এক্সেল এক্সপোর্ট',
+    resetBtnM: 'কমিটি রিসেট',
+    printBtnM: 'রিপোর্ট প্রিন্ট',
+    winnerReportBtn: 'বিজয়ী রিপোর্ট প্রিন্ট',
+    invoiceBtnM: 'ইনভয়েস প্রিন্ট',
+    waReminderBtn: 'হোয়াটসঅ্যাপ রিমাইন্ডার',
+    langBtn: 'ভাষা',
+    guideBtn: 'ব্যবহারকারী গাইড',
+    closeMenuBtn: 'বন্ধ করুন',
+    langModalTitle: 'ভাষা নির্বাচন করুন',
+    closeLangBtn: 'বন্ধ করুন',
+    guideTitle: 'ব্যবহারকারী গাইড',
+  }
+};
+
+// ============================================================
+// GLOBALS
+// ============================================================
+let data = { manager: [], member: [] };
+let currentMode = 'manager';
+let currentId = null;
+let currentDrawPage = 1;
+let editSettingsActive = true;
+let currentLanguage = 'en';
+let searchQuery = '';
+let sortColumn = null;
+let sortAsc = true;
+
+// Save state for modal
+let pendingSave = null;
+
+// ============================================================
+// LANGUAGE FUNCTIONS
+// ============================================================
+function updateLanguage() {
+  let t = texts[currentLanguage];
+  for (let id in t) { let el = document.getElementById(id); if (el) el.innerText = t[id]; }
+  let rem = document.getElementById('backupReminder'); if (rem) rem.innerText = t.backupReminder;
+  document.querySelectorAll('.lang-selector button').forEach(btn => {
+    btn.classList.remove('active');
+    if ((currentLanguage === 'en' && btn.textContent === 'English') ||
+        (currentLanguage === 'ur' && btn.textContent === 'اردو') ||
+        (currentLanguage === 'hi' && btn.textContent === 'हिन्दी') ||
+        (currentLanguage === 'bn' && btn.textContent === 'বাংলা')) {
+      btn.classList.add('active');
+    }
+  });
+  render();
+}
+
+function selectLanguage(lang) {
+  currentLanguage = lang;
+  localStorage.setItem('appLang', lang);
+  updateLanguage();
+  closeLanguageModal();
+  playSound('success');
+}
+
+// ============================================================
+// GUIDE NAVIGATION
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.card-grid .card').forEach(card => {
+    card.addEventListener('click', function() {
+      let targetId = this.dataset.section;
+      if (targetId) {
+        let targetEl = document.getElementById(targetId);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+  });
+  
+  let savedId = localStorage.getItem('lastCommitteeId');
+  if (savedId) {
+    let list = getModeCommittees();
+    if (list.find(c => c.id === Number(savedId))) {
+      currentId = Number(savedId);
+      updateSelect();
+      populateConfigFromCurrent();
+    }
+  }
+});
+
+// ============================================================
+// DATA FUNCTIONS
+// ============================================================
+function loadData() {
+  let stored = localStorage.getItem('committeeData');
+  if (stored) {
+    try {
+      let parsed = JSON.parse(stored);
+      if (parsed.manager) data.manager = parsed.manager;
+      if (parsed.member) data.member = parsed.member;
+    } catch(e) {}
+  }
+  ['manager','member'].forEach(m => {
+    if (!data[m] || data[m].length === 0) data[m] = [getDefaultCommittee('My Committee')];
+  });
+}
+
+function saveData() { localStorage.setItem('committeeData', JSON.stringify(data)); }
+
+function getModeCommittees() { return data[currentMode] || []; }
+
+function currentCommittee() {
+  let list = getModeCommittees();
+  return list.find(c => c.id === currentId) || null;
+}
+
+function getDefaultCommittee(name) {
+  return {
+    id: Date.now(),
+    name: name,
+    startDate: '',
+    totalMembers: 0,
+    installmentAmount: 0,
+    payFreq: 'daily',
+    drawSch: 'monthly',
+    members: [],
+    created: false,
+    drawWinnerDeclared: [],
+    managerName: '',
+  };
+}
+
+// ============================================================
+// CORE HELPERS
+// ============================================================
+function getDaysInMonth(y,m){ return new Date(y,m+1,0).getDate(); }
+
+function getDailyAmount(y,m,di,base){
+  let d = getDaysInMonth(y,m);
+  if (d === 31 && di === 30) return 0;
+  if (m === 1) {
+    if (d === 28 && di === 27) return base * 3;
+    if (d === 29 && di === 28) return base * 2;
+  }
+  return base;
+}
+
+function getPaymentDueDatesCapped(start, drawIdx, payFreq, drawSch) {
+  let s = new Date(start);
+  if (drawSch === 'monthly') {
+    let y = s.getFullYear(), m = s.getMonth() + drawIdx;
+    if (payFreq === 'monthly') {
+      let targetDay = s.getDate();
+      let due = new Date(y, m, targetDay);
+      if (due.getMonth() !== m) due = new Date(y, m + 1, 0);
+      return [due];
+    } else if (payFreq === 'daily') {
+      let days = getDaysInMonth(y, m);
+      let dates = [];
+      for (let d = 0; d < days; d++) dates.push(new Date(y, m, d + 1));
+      return dates;
+    } else {
+      let startDate = new Date(y, m, s.getDate());
+      let end = new Date(y, m + 1, 0);
+      let interval = { weekly: 7, '10days': 10, fortnightly: 15 }[payFreq] || 7;
+      let dates = [];
+      let cur = new Date(startDate);
+      while (cur <= end) { dates.push(new Date(cur)); cur.setDate(cur.getDate() + interval); }
+      let max = { weekly: 4, '10days': 3, fortnightly: 2 }[payFreq] || 4;
+      return dates.slice(0, max);
+    }
+  } else {
+    let offset = { weekly: 7, '10days': 10, fortnightly: 14 }[drawSch] || 7;
+    let startDate = new Date(s);
+    startDate.setDate(startDate.getDate() + offset * drawIdx);
+    let end = new Date(startDate);
+    end.setDate(startDate.getDate() + offset - 1);
+    if (payFreq === 'daily') {
+      let dates = [];
+      for (let d = 0; d < offset; d++) dates.push(new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + d));
+      return dates;
+    } else {
+      let interval = { weekly: 7, '10days': 10, fortnightly: 15, monthly: 30 }[payFreq] || 7;
+      let dates = [];
+      let cur = new Date(startDate);
+      while (cur <= end) { dates.push(new Date(cur)); cur.setDate(cur.getDate() + interval); }
+      return dates;
+    }
+  }
+}
+
+function getPerMemberPerDraw(c, drawIdx) {
+  let due = getPaymentDueDatesCapped(c.startDate, drawIdx, c.payFreq, c.drawSch);
+  let total = 0;
+  for (let d of due) total += getDailyAmount(d.getFullYear(), d.getMonth(), d.getDate() - 1, c.installmentAmount);
+  return total;
+}
+
+function totalCommittee(c) {
+  let total = 0;
+  for (let i = 0; i < c.members.length; i++) {
+    total += getPerMemberPerDraw(c, i);
+  }
+  return total;
+}
+
+function getTotalPerDraw(c, drawIdx) {
+  return c.members.length * getPerMemberPerDraw(c, drawIdx);
+}
+
+function isMemberFullyPaidForDraw(m, drawIdx, c) {
+  let dueDates = getPaymentDueDatesCapped(c.startDate, drawIdx, c.payFreq, c.drawSch);
+  let payments = m.payments[drawIdx] || [];
+  for (let i = 0; i < dueDates.length; i++) {
+    let expected = getDailyAmount(dueDates[i].getFullYear(), dueDates[i].getMonth(), dueDates[i].getDate() - 1, c.installmentAmount);
+    let paid = payments[i] || 0;
+    if (paid < expected) return false;
+  }
+  return true;
+}
+
+function getEligibleMembersForDraw(c, drawIdx) { return c.members.filter(m => !m.winner && isMemberFullyPaidForDraw(m, drawIdx, c)); }
+
+// ============================================================
+// SWITCH FUNCTIONS
+// ============================================================
+function updateSelect() {
+  let sel = document.getElementById('committeeSelect');
+  let list = getModeCommittees();
+  sel.innerHTML = '';
+  list.forEach(c => {
+    let o = document.createElement('option');
+    o.value = c.id;
+    o.text = c.name;
+    if (c.id === currentId) o.selected = true;
+    sel.appendChild(o);
+  });
+}
+
+function populateConfigFromCurrent() {
+  let c = currentCommittee();
+  if (c) {
+    document.getElementById('startDate').value = c.startDate || '';
+    document.getElementById('memberCount').value = c.totalMembers || '';
+    document.getElementById('installmentAmt').value = c.installmentAmount || '';
+    document.getElementById('payFreq').value = c.payFreq || 'daily';
+    document.getElementById('drawSch').value = c.drawSch || 'monthly';
+    document.getElementById('managerNameInput').value = c.managerName || '';
+  }
+}
+
+function switchCommittee() {
+  currentId = Number(document.getElementById('committeeSelect').value);
+  localStorage.setItem('lastCommitteeId', currentId);
+  populateConfigFromCurrent();
+  currentDrawPage = 1;
+  render();
+}
+
+function changeRole(role) {
+  currentMode = role;
+  document.body.className = role + '-mode';
+  document.getElementById('modeSelect').value = role;
+  let t = texts[currentLanguage];
+  let modeLabel = role === 'manager' ? t.modeManager : t.modeMember;
+  document.getElementById('modeBadge').innerHTML = '[' + (role === 'manager' ? 'M' : 'V') + '] ' + modeLabel + ' Mode';
+  if (role === 'manager') {
+    document.getElementById('managerNameInput').readOnly = false;
+  } else {
+    document.getElementById('managerNameInput').readOnly = true;
+  }
+  let list = getModeCommittees();
+  if (list.length > 0 && !list.find(c => c.id === currentId)) currentId = list[0].id;
+  else if (list.length === 0) {
+    let c = getDefaultCommittee('My Committee');
+    list.push(c); currentId = c.id; saveData();
+  }
+  localStorage.setItem('lastCommitteeId', currentId);
+  updateSelect();
+  populateConfigFromCurrent();
+  currentDrawPage = 1;
+  render();
+  playSound('save');
+}
+
+// ============================================================
+// RENDER FUNCTIONS
+// ============================================================
+function render() {
+  let c = currentCommittee();
+  if (!c) return;
+  let t = texts[currentLanguage];
+  document.getElementById('modeHint').innerText = (currentMode==='manager'?t.modeManager:t.modeMember) + ' mode';
+  let modeLabel = currentMode === 'manager' ? t.modeManager : t.modeMember;
+  document.getElementById('modeBadge').innerHTML = '[' + (currentMode === 'manager' ? 'M' : 'V') + '] ' + modeLabel + ' Mode';
+  updateEndDate(c);
+  if (currentMode === 'manager') renderManager(c);
+  else renderMember(c);
+  renderMenuVisibility();
+  if (currentMode !== 'personal') updateOverdueAlert(c);
+  else document.getElementById('overdueAlert').style.display = 'none';
+}
+
+function updateEndDate(c) {
+  let endBox = document.getElementById('endDateDisplay');
+  if (!c.created || c.members.length === 0) {
+    endBox.innerText = 'Not calculated yet';
+    return;
+  }
+  let start = new Date(c.startDate);
+  let totalDraws = c.members.length;
+  let offset = { weekly: 7, '10days': 10, fortnightly: 14, monthly: 30 }[c.drawSch] || 30;
+  let end = new Date(start);
+  end.setDate(end.getDate() + offset * totalDraws);
+  let d = String(end.getDate()).padStart(2,'0');
+  let m = String(end.getMonth()+1).padStart(2,'0');
+  let y = String(end.getFullYear()).slice(2);
+  endBox.innerText = d + '/' + m + '/' + y;
+}
+
+function renderMenuVisibility() {
+  let isManager = currentMode === 'manager';
+  let menu = document.getElementById('menuModal');
+  ['backupToFolder','restoreFromFolder'].forEach(id => {
+    let btn = menu.querySelector('button[onclick="'+id+'()"]');
+    if (btn) btn.style.display = 'block';
+  });
+  let shareBtn = menu.querySelector('button[onclick="shareCommittee()"]');
+  if (shareBtn) shareBtn.style.display = isManager ? 'block' : 'none';
+  ['excelToFolder','printReport','generateWinnerReport','generatePDFInvoice','sendWhatsAppReminders'].forEach(id => {
+    let btn = menu.querySelector('button[onclick="'+id+'()"]');
+    if (btn) btn.style.display = isManager ? 'block' : 'none';
+  });
+}
+
+function renderManager(c) {
+  if (!c.created) {
+    document.getElementById('setupPage').style.display = 'block';
+    document.getElementById('tableBody').innerHTML = '<tr><td colspan="10">Create committee to start.</td></tr>';
+    resetDashboard();
+    let wrapper = document.querySelector('.table-wrapper');
+    let existing = wrapper.querySelector('.mark-all-btn');
+    if (existing) existing.remove();
+    return;
+  }
+  document.getElementById('setupPage').style.display = editSettingsActive ? 'block' : 'none';
+  let drawIdx = currentDrawPage - 1;
+  let dueDates = getPaymentDueDatesCapped(c.startDate, drawIdx, c.payFreq, c.drawSch);
+  let thead = '<tr><th>#</th><th class="sort-header" data-col="name">Name</th><th>WhatsApp</th>';
+  for (let d of dueDates) {
+    let dateStr = String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + String(d.getFullYear()).slice(2);
+    let exp = getDailyAmount(d.getFullYear(), d.getMonth(), d.getDate() - 1, c.installmentAmount);
+    thead += `<th>${dateStr}<br>${exp === 0 ? '-' : exp}</th>`;
+  }
+  thead += '<th class="sort-header" data-col="total">Total</th><th>Status</th><th>Action</th></tr>';
+  document.getElementById('tableHead').innerHTML = thead;
+  let members = [...c.members];
+  if (sortColumn) {
+    members.sort((a,b) => {
+      let va = sortColumn==='name' ? a.name.toLowerCase() : (sortColumn==='total' ? (a.payments[drawIdx]||[]).reduce((s,x)=>s+(x||0),0) : 0);
+      let vb = sortColumn==='name' ? b.name.toLowerCase() : (sortColumn==='total' ? (b.payments[drawIdx]||[]).reduce((s,x)=>s+(x||0),0) : 0);
+      if (va < vb) return sortAsc ? -1 : 1;
+      if (va > vb) return sortAsc ? 1 : -1;
+      return 0;
+    });
+  }
+  if (searchQuery.trim()) {
+    members = members.filter(m => m.name.toLowerCase().includes(searchQuery.toLowerCase()) || (m.whatsapp||'').includes(searchQuery));
+  }
+  let isDrawLocked = c.drawWinnerDeclared[drawIdx] && c.members.every(m => isMemberFullyPaidForDraw(m, drawIdx, c));
+  let body = '';
+  for (let i = 0; i < members.length; i++) {
+    let m = members[i];
+    let rowClass = m.winner ? 'winner-row' : '';
+    body += `<tr class="${rowClass}"><td>${i+1}</td>`;
+    body += `<td><input value="${escapeHtml(m.name)}" onchange="updateName(${m.id},this.value)" style="width:80px;"></td>`;
+    body += `<td><input value="${escapeHtml(m.whatsapp)}" onchange="updateWhatsApp(${m.id},this.value)" style="width:100px;"><button class="reminder-btn" onclick="sendReminderForMember(${m.id})">WA</button></td>`;
+    let payments = m.payments[drawIdx] || [];
+    let totalDraw = 0;
+    for (let idx = 0; idx < dueDates.length; idx++) {
+      let expected = getDailyAmount(dueDates[idx].getFullYear(), dueDates[idx].getMonth(), dueDates[idx].getDate() - 1, c.installmentAmount);
+      let val = payments[idx] || 0;
+      totalDraw += val;
+      let date = dueDates[idx];
+      let isOverdue = (date < new Date() && val < expected);
+      let tdClass = isOverdue ? 'payment-overdue' : '';
+      let disabled = isDrawLocked || (c.drawWinnerDeclared[drawIdx] && isMemberFullyPaidForDraw(m, drawIdx, c)) || (expected === 0);
+      if (disabled) {
+        body += `<td class="${tdClass} disabled-input">${val}</td>`;
+      } else {
+        body += `<td class="${tdClass}"><input type="number" value="${val}" data-mid="${m.id}" data-draw="${drawIdx}" data-due="${idx}" data-exp="${expected}" style="width:70px;"></td>`;
+      }
+    }
+    body += `<td><strong>${totalDraw}</strong></td>`;
+    body += `<td>${m.winner ? texts[currentLanguage].winner : texts[currentLanguage].active}</td>`;
+    if (!m.winner && !c.drawWinnerDeclared[drawIdx] && isMemberFullyPaidForDraw(m, drawIdx, c)) {
+      body += `<td><button onclick="makeWinner(${m.id})" style="background:#f39c12; border:none; padding:4px 12px; border-radius:20px; font-weight:600; cursor:pointer;">${texts[currentLanguage].select || 'Select'}</button></td>`;
+    } else {
+      body += `<td>${c.drawWinnerDeclared[drawIdx] ? '-' : texts[currentLanguage].notPaid}</td>`;
+    }
+    body += '</tr>';
+  }
+  document.getElementById('tableBody').innerHTML = body;
+  attachPaymentEvents();
+  updateStats(c, drawIdx);
+  document.getElementById('installmentPageInfo').innerHTML = `Draw ${currentDrawPage} / ${c.members.length}`;
+  let markBtn = document.createElement('button');
+  markBtn.innerText = 'Mark All Paid for This Draw';
+  markBtn.style.cssText = 'margin:8px 0; padding:8px 18px; background:#27ae60; color:white; border:none; border-radius:40px; font-weight:600; cursor:pointer;';
+  markBtn.onclick = function() { markAllPaid(c, drawIdx); };
+  let wrapper = document.querySelector('.table-wrapper');
+  let existing = wrapper.querySelector('.mark-all-btn');
+  if (existing) existing.remove();
+  markBtn.className = 'mark-all-btn';
+  wrapper.prepend(markBtn);
+}
+
+function renderMember(c) {
+  if (!c.created) { document.getElementById('tableBody').innerHTML = '<tr><td colspan="10">No committee data.</td></tr>'; resetDashboard(); return; }
+  let drawIdx = currentDrawPage - 1;
+  let dueDates = getPaymentDueDatesCapped(c.startDate, drawIdx, c.payFreq, c.drawSch);
+  let thead = '<tr><th>#</th><th>Name</th><th>WhatsApp</th>';
+  for (let d of dueDates) {
+    let dateStr = String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + String(d.getFullYear()).slice(2);
+    thead += `<th>${dateStr}</th>`;
+  }
+  thead += '<th>Total</th><th>Status</th></tr>';
+  document.getElementById('tableHead').innerHTML = thead;
+  let body = '';
+  let members = c.members;
+  if (searchQuery.trim()) members = members.filter(m => m.name.toLowerCase().includes(searchQuery.toLowerCase()) || (m.whatsapp||'').includes(searchQuery));
+  for (let i = 0; i < members.length; i++) {
+    let m = members[i];
+    let rowClass = m.winner ? 'winner-row' : '';
+    body += `<tr class="${rowClass}"><td>${i+1}</td>`;
+    body += `<td class="readonly-mode">${escapeHtml(m.name)}</td>`;
+    body += `<td class="readonly-mode">${escapeHtml(m.whatsapp)}</td>`;
+    let payments = m.payments[drawIdx] || [];
+    let totalDraw = 0;
+    for (let idx = 0; idx < dueDates.length; idx++) {
+      let val = payments[idx] || 0;
+      totalDraw += val;
+      let date = dueDates[idx];
+      let expected = getDailyAmount(date.getFullYear(), date.getMonth(), date.getDate() - 1, c.installmentAmount);
+      let isOverdue = (date < new Date() && val < expected);
+      let tdClass = isOverdue ? 'payment-overdue' : '';
+      body += `<td class="${tdClass}">${val}</td>`;
+    }
+    body += `<td>${totalDraw}</td><td>${m.winner ? texts[currentLanguage].winner : texts[currentLanguage].active}</td></tr>`;
+  }
+  document.getElementById('tableBody').innerHTML = body;
+  updateStats(c, drawIdx);
+  document.getElementById('installmentPageInfo').innerHTML = `Draw ${currentDrawPage} / ${c.members.length}`;
+  let wrapper = document.querySelector('.table-wrapper');
+  let existing = wrapper.querySelector('.mark-all-btn');
+  if (existing) existing.remove();
+}
+
+function resetDashboard() {
+  document.getElementById('totalAmt').innerHTML = '0';
+  document.getElementById('remainingAmt').innerHTML = '0';
+  document.getElementById('drawDone').innerHTML = '0/0';
+  document.getElementById('perMem').innerHTML = '0';
+  document.getElementById('progressFill').style.width = '0%';
+  document.getElementById('progressText').innerHTML = '0% completed';
+}
+
+function attachPaymentEvents() {
+  document.querySelectorAll('#memberTable input[type="number"]').forEach(inp => {
+    let newInp = inp.cloneNode(true);
+    inp.parentNode.replaceChild(newInp, inp);
+    let mid = parseInt(newInp.dataset.mid);
+    let draw = parseInt(newInp.dataset.draw);
+    let due = parseInt(newInp.dataset.due);
+    let exp = parseInt(newInp.dataset.exp);
+    let oldValue = parseFloat(newInp.value) || 0;
+    newInp.addEventListener('focus', function() {
+      oldValue = parseFloat(this.value) || 0;
+    });
+    newInp.addEventListener('change', function(e) {
+      let newVal = parseFloat(this.value);
+      if (isNaN(newVal)) newVal = 0;
+      if (newVal === oldValue) return;
+      showConfirm(newVal, (confirmed) => {
+        if (confirmed) {
+          let c = currentCommittee();
+          let m = c.members.find(x => x.id === mid);
+          if (m) {
+            if (!m.payments[draw]) m.payments[draw] = [];
+            m.payments[draw][due] = newVal;
+            saveData();
+            render();
+            playSound('save');
+            showToast('Payment updated.');
+          }
+        } else {
+          this.value = oldValue;
+        }
+      });
+    });
+    newInp.addEventListener('blur', function() {
+      let newVal = parseFloat(this.value);
+      if (isNaN(newVal)) newVal = 0;
+      if (newVal !== oldValue) {
+        this.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+  });
+}
+
+function showConfirm(amount, callback) {
+  let overlay = document.getElementById('customConfirm');
+  document.getElementById('confirmMessage').innerText = 'You entered: ' + amount;
+  overlay.classList.add('active');
+  let okBtn = document.getElementById('confirmOk');
+  let cancelBtn = document.getElementById('confirmCancel');
+  let newOk = okBtn.cloneNode(true);
+  let newCancel = cancelBtn.cloneNode(true);
+  okBtn.parentNode.replaceChild(newOk, okBtn);
+  cancelBtn.parentNode.replaceChild(newCancel, cancelBtn);
+  newOk.addEventListener('click', function() {
+    overlay.classList.remove('active');
+    callback(true);
+  });
+  newCancel.addEventListener('click', function() {
+    overlay.classList.remove('active');
+    callback(false);
+  });
+}
+
+function showToast(msg) {
+  let toast = document.getElementById('toast');
+  toast.innerText = msg;
+  toast.className = 'toast show';
+  setTimeout(() => { toast.className = 'toast'; }, 3000);
+}
+
+function updateStats(c, drawIdx) {
+  let totalPerDraw = getTotalPerDraw(c, drawIdx);
+  let perDraw = getPerMemberPerDraw(c, drawIdx);
+  let totalCurrent = totalPerDraw;
+  let collected = 0;
+  for (let m of c.members) { let pays = m.payments[drawIdx] || []; collected += pays.reduce((a,b) => a+(b||0), 0); }
+  let remaining = totalCurrent - collected;
+  document.getElementById('totalAmt').innerHTML = totalPerDraw.toLocaleString();
+  document.getElementById('remainingAmt').innerHTML = remaining.toLocaleString();
+  document.getElementById('drawDone').innerHTML = `${c.members.filter(m=>m.winner).length}/${c.members.length}`;
+  document.getElementById('perMem').innerHTML = perDraw.toLocaleString();
+  let percent = c.members.length ? (c.members.filter(m=>m.winner).length / c.members.length) * 100 : 0;
+  document.getElementById('progressFill').style.width = percent + '%';
+  document.getElementById('progressText').innerHTML = `${c.members.filter(m=>m.winner).length}/${c.members.length} draws completed (${Math.round(percent)}%)`;
+}
+
+function updateOverdueAlert(c) {
+  let drawIdx = currentDrawPage - 1;
+  let dueDates = getPaymentDueDatesCapped(c.startDate, drawIdx, c.payFreq, c.drawSch);
+  let today = new Date(); today.setHours(0,0,0,0);
+  let overdueNames = [];
+  for (let m of c.members) {
+    if (m.winner) continue;
+    let pays = m.payments[drawIdx] || [];
+    for (let idx=0; idx<dueDates.length; idx++) {
+      let date = dueDates[idx];
+      let expected = getDailyAmount(date.getFullYear(), date.getMonth(), date.getDate() - 1, c.installmentAmount);
+      if (date < today && (pays[idx]||0) < expected) { overdueNames.push(m.name); break; }
+    }
+  }
+  let alertDiv = document.getElementById('overdueAlert');
+  let t = texts[currentLanguage];
+  if (overdueNames.length) {
+    alertDiv.innerHTML = (t.overduePrefix||'Overdue Payments: ')+overdueNames.join(', ')+'. Please remind them.';
+    alertDiv.style.display = 'block';
+  } else alertDiv.style.display = 'none';
+}
+
+function filterTable() { searchQuery = document.getElementById('searchInput').value; render(); }
+
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('sort-header')) {
+    let col = e.target.dataset.col;
+    if (sortColumn === col) sortAsc = !sortAsc;
+    else { sortColumn = col; sortAsc = true; }
+    render();
+  }
+});
+
+// ============================================================
+// COMMITTEE ACTIONS
+// ============================================================
+function saveCommittee() {
+  let c = currentCommittee();
+  if (!c) return;
+  let payFreq = document.getElementById('payFreq').value;
+  let drawSch = document.getElementById('drawSch').value;
+  if ((payFreq === 'monthly' && drawSch === 'fortnightly') || (payFreq === '10days' && drawSch === 'fortnightly')) {
+    alert("Invalid combination!"); playSound('error'); return;
+  }
+  let memberCount = parseInt(document.getElementById('memberCount').value);
+  if (isNaN(memberCount) || memberCount < 1 || memberCount > 500) { alert("Members 1-500."); playSound('error'); return; }
+  let amount = parseInt(document.getElementById('installmentAmt').value);
+  if (isNaN(amount) || amount < 1 || amount > 10000000) { alert("Amount 1-10M."); playSound('error'); return; }
+  if (c.created && c.members.length > 0 && !confirm("Changing settings will DELETE all member data. Continue?")) return;
+  c.startDate = document.getElementById('startDate').value;
+  c.totalMembers = memberCount;
+  c.installmentAmount = amount;
+  c.payFreq = payFreq;
+  c.drawSch = drawSch;
+  c.managerName = document.getElementById('managerNameInput').value;
+  let newMembers = [];
+  for (let i=0; i<memberCount; i++) newMembers.push({ id: Date.now()+i, name: 'Member '+(i+1), whatsapp: '', payments: [], winner: false, winnerDraw: null });
+  c.members = newMembers;
+  c.drawWinnerDeclared = new Array(memberCount).fill(false);
+  for (let d=0; d<memberCount; d++) {
+    let dueDates = getPaymentDueDatesCapped(c.startDate, d, c.payFreq, c.drawSch);
+    c.members.forEach(m => {
+      m.payments[d] = new Array(dueDates.length).fill(0);
+    });
+  }
+  c.created = true;
+  currentDrawPage = 1;
+  saveData();
+  render();
+  playSound('success');
+  alert('Committee created! Total amount: ' + totalCommittee(c).toLocaleString());
+}
+
+function makeWinner(mid) {
+  let c = currentCommittee();
+  let m = c.members.find(x => x.id === mid);
+  let drawIdx = currentDrawPage - 1;
+  if (c.drawWinnerDeclared[drawIdx]) { alert("Winner already declared."); return; }
+  if (!isMemberFullyPaidForDraw(m, drawIdx, c)) { alert("Member not fully paid."); return; }
+  if (confirm('Make ' + m.name + ' winner?')) {
+    m.winner = true; m.winnerDraw = drawIdx + 1;
+    c.drawWinnerDeclared[drawIdx] = true;
+    saveData(); render(); playSound('success');
+    alert(m.name + ' is winner!');
+  }
+}
+
+function computerizedDraw() {
+  if (currentMode !== 'manager') { alert("Only manager can run computerized draw."); return; }
+  let c = currentCommittee();
+  let drawIdx = currentDrawPage - 1;
+  if (!c.created) { alert("Create committee first."); return; }
+  if (c.drawWinnerDeclared[drawIdx]) { alert("Winner already declared for this draw."); return; }
+
+  let eligible = getEligibleMembersForDraw(c, drawIdx);
+  let ineligible = c.members.filter(m => !m.winner && !isMemberFullyPaidForDraw(m, drawIdx, c));
+
+  let msg = "";
+  if (ineligible.length > 0) {
+    msg += "The following members have NOT fully paid:\n\n";
+    ineligible.forEach(m => {
+      let dueDates = getPaymentDueDatesCapped(c.startDate, drawIdx, c.payFreq, c.drawSch);
+      let paid=0, expected=0;
+      let pays = m.payments[drawIdx] || [];
+      for (let i=0; i<dueDates.length; i++) {
+        expected += getDailyAmount(dueDates[i].getFullYear(), dueDates[i].getMonth(), dueDates[i].getDate()-1, c.installmentAmount);
+        paid += pays[i] || 0;
+      }
+      msg += ' - ' + m.name + ' (Paid: ' + paid + ' / Expected: ' + expected + ')\n';
+    });
+    msg += "\nThese members are NOT eligible.\n";
+  }
+
+  if (eligible.length === 0) {
+    msg += "\nNo eligible members available.";
+    alert(msg); return;
+  }
+
+  msg += '\nEligible members (' + eligible.length + '):\n';
+  eligible.forEach(m => { msg += ' - ' + m.name + '\n'; });
+
+  if (ineligible.length > 0) {
+    msg += '\nMay I proceed without the ineligible members?';
+  } else {
+    msg += '\n\nProceed with draw?';
+  }
+
+  showDrawConfirm(msg, (confirmed) => {
+    if (!confirmed) {
+      alert("Draw cancelled.");
+      return;
+    }
+    let w = eligible[Math.floor(Math.random() * eligible.length)];
+    if (confirm('Winner: ' + w.name + '\nConfirm?')) {
+      w.winner = true;
+      w.winnerDraw = drawIdx + 1;
+      c.drawWinnerDeclared[drawIdx] = true;
+      saveData();
+      render();
+      playSound('success');
+      alert(w.name + ' is the winner!');
+    } else {
+      alert("Draw cancelled.");
+    }
+  });
+}
+
+function showDrawConfirm(message, callback) {
+  let overlay = document.getElementById('drawConfirm');
+  let msgEl = document.getElementById('drawConfirmMsg');
+  msgEl.innerText = message;
+  overlay.classList.add('active');
+  let okBtn = document.getElementById('drawConfirmOk');
+  let cancelBtn = document.getElementById('drawConfirmCancel');
+  let newOk = okBtn.cloneNode(true);
+  let newCancel = cancelBtn.cloneNode(true);
+  okBtn.parentNode.replaceChild(newOk, okBtn);
+  cancelBtn.parentNode.replaceChild(newCancel, cancelBtn);
+  newOk.addEventListener('click', function() {
+    overlay.classList.remove('active');
+    callback(true);
+  });
+  newCancel.addEventListener('click', function() {
+    overlay.classList.remove('active');
+    callback(false);
+  });
+}
+
+function manualDraw() {
+  if (currentMode === 'member') { alert("Member mode does not have draw features."); return; }
+  alert("Click 'Select' button next to an eligible member.");
+}
+
+function changePage(delta) {
+  let c = currentCommittee();
+  if (!c.created) return;
+  let np = currentDrawPage + delta;
+  if (np >= 1 && np <= c.members.length) { currentDrawPage = np; render(); }
+}
+
+function markAllPaid(c, drawIdx) {
+  if (!confirm("Set all members to fully paid for this draw?")) return;
+  let dueDates = getPaymentDueDatesCapped(c.startDate, drawIdx, c.payFreq, c.drawSch);
+  for (let m of c.members) {
+    if (!m.payments[drawIdx]) m.payments[drawIdx] = [];
+    for (let i=0; i<dueDates.length; i++) {
+      let expected = getDailyAmount(dueDates[i].getFullYear(), dueDates[i].getMonth(), dueDates[i].getDate() - 1, c.installmentAmount);
+      m.payments[drawIdx][i] = expected;
+    }
+  }
+  saveData(); render(); playSound('save');
+  alert("All members marked as fully paid.");
+}
+
+// ============================================================
+// SAVE PREVIEW MODAL - Closes menu first
+// ============================================================
+function closeMenuModal() { document.getElementById('menuModal').style.display = 'none'; }
+
+function showSaveModal(fileName, fileType, fileSize, committeeName, modeName, saveCallback) {
+  closeMenuModal();
+  document.getElementById('previewFileName').textContent = fileName;
+  document.getElementById('previewFileType').textContent = fileType;
+  document.getElementById('previewCommittee').textContent = committeeName;
+  document.getElementById('previewMode').textContent = modeName;
+  document.getElementById('previewSize').textContent = fileSize;
+  document.getElementById('fileIcon').textContent = fileType === 'CSV' ? '[CSV]' : '[FILE]';
+  document.getElementById('saveModalTitle').textContent = 'Save ' + fileType + ' File';
+  document.getElementById('saveModal').classList.add('active');
+  pendingSave = saveCallback;
+}
+
+document.getElementById('saveModalConfirm').addEventListener('click', function() {
+  if (pendingSave) {
+    pendingSave();
+    pendingSave = null;
+  }
+  document.getElementById('saveModal').classList.remove('active');
+  playSound('success');
+});
+
+document.getElementById('saveModalCancel').addEventListener('click', function() {
+  pendingSave = null;
+  document.getElementById('saveModal').classList.remove('active');
+  playSound('save');
+});
+
+// ============================================================
+// SAVE FILE FUNCTION - Uses <a> tag download (Chrome & APK compatible)
+// ============================================================
+function saveFileDirect(filename, content, fileType) {
+  try {
+    let jsonStr = JSON.stringify(content);
+    let blob = new Blob([jsonStr], {type: 'application/json'});
+    let url = URL.createObjectURL(blob);
+    
+    let c = currentCommittee();
+    let modeLabel = currentMode === 'manager' ? 'Manager' : 'Member';
+    let fileSize = (jsonStr.length / 1024).toFixed(1) + ' KB';
+    
+    showSaveModal(
+      filename,
+      fileType || 'CEX',
+      fileSize,
+      c ? c.name : 'Unknown',
+      modeLabel + ' Mode',
+      function() {
+        try {
+          // Use invisible anchor tag to trigger download
+          let a = document.createElement('a');
+          a.href = url;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(function() {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          }, 1000);
+          showToast('File saved: ' + filename);
+          playSound('success');
+        } catch(e) {
+          alert('Download failed. Please try again.');
+          console.error('Save error:', e);
+        }
+      }
+    );
+  } catch(e) {
+    alert('Failed to prepare file. Please try again.');
+    console.error('Save error:', e);
+  }
+}
+
+function backupToFolder() {
+  let c = currentCommittee();
+  if (!c.created) { alert("Create committee first."); return; }
+  let mode = currentMode;
+  let list = getModeCommittees();
+  let dataToSave = { restoreMode: mode, committees: list };
+  let prefix = mode==='manager' ? 'ManagerBackup_' : 'MemberBackup_';
+  let dt = getDateTimeString();
+  let defName = prefix + dt + '_' + c.name.replace(/[^a-z0-9]/gi,'_') + '.cex';
+  if (mode === 'member' && !defName.startsWith('MemberBackup_')) defName = 'MemberBackup_' + defName.substring(defName.indexOf('_')+1);
+  saveFileDirect(defName, dataToSave, 'CEX');
+}
+
+function shareCommittee() {
+  if (currentMode !== 'manager') { alert("Only manager can share."); return; }
+  let c = currentCommittee();
+  if (!c.created) { alert("Create committee first."); return; }
+  let dataToSave = { restoreMode: 'member', committee: c };
+  let dt = getDateTimeString();
+  let defName = 'Share_' + dt + '_' + c.name.replace(/[^a-z0-9]/gi,'_') + '.cex';
+  saveFileDirect(defName, dataToSave, 'CEX');
+}
+
+function excelToFolder() {
+  if (currentMode !== 'manager') { alert("Only manager can export Excel."); return; }
+  let c = currentCommittee();
+  if (!c.created) { alert("Create committee first."); return; }
+  let rows = [["Member","WhatsApp","Winner","Total Paid"]];
+  c.members.forEach(m => {
+    let total=0;
+    if (m.payments) for (let p of m.payments) if (Array.isArray(p)) total += p.reduce((a,b)=>a+(b||0),0); else total += p||0;
+    rows.push([m.name, m.whatsapp||'', m.winner ? 'Yes (Draw ' + m.winnerDraw + ')' : 'No', total]);
+  });
+  let csv = "\uFEFF" + rows.map(r => r.join(",")).join("\n");
+  let dt = getDateTimeString();
+  let defName = 'Export_' + dt + '_' + c.name.replace(/[^a-z0-9]/gi,'_') + '.csv';
+  
+  try {
+    let csvBlob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    let url = URL.createObjectURL(csvBlob);
+    
+    let cObj = currentCommittee();
+    let modeLabel = currentMode === 'manager' ? 'Manager' : 'Member';
+    let fileSize = (csv.length / 1024).toFixed(1) + ' KB';
+    
+    showSaveModal(
+      defName,
+      'CSV',
+      fileSize,
+      cObj ? cObj.name : 'Unknown',
+      modeLabel + ' Mode',
+      function() {
+        try {
+          let a = document.createElement('a');
+          a.href = url;
+          a.download = defName;
+          document.body.appendChild(a);
+          a.click();
+          setTimeout(function() {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+          }, 1000);
+          showToast('File saved: ' + defName);
+          playSound('success');
+        } catch(e) {
+          alert('Download failed. Please try again.');
+        }
+      }
+    );
+  } catch(e) {
+    alert('Failed to export. Please try again.');
+  }
+}
+
+// ============================================================
+// RESTORE
+// ============================================================
+async function restoreFromFolder() {
+  try {
+    let file = await new Promise((resolve, reject) => {
+      let inp = document.createElement('input');
+      inp.type = 'file';
+      inp.accept = '.cex';
+      inp.onchange = (e) => {
+        if (e.target.files.length === 0) { reject('No file selected'); return; }
+        resolve(e.target.files[0]);
+      };
+      inp.click();
+    });
+    let cont = await file.text();
+    let obj = JSON.parse(cont);
+    let mode = obj.restoreMode;
+    if (!mode) { alert("Invalid file format."); return; }
+    if (mode !== currentMode) {
+      alert('This file was created in ' + mode + ' mode. Please switch to ' + mode + ' mode.');
+      return;
+    }
+    let committeesToRestore = [];
+    if (obj.committees) committeesToRestore = obj.committees;
+    else if (obj.committee) committeesToRestore = [obj.committee];
+    else committeesToRestore = [obj];
+    let existing = data[currentMode] || [];
+    let existingIds = new Set(existing.map(c => c.id));
+    for (let nc of committeesToRestore) {
+      if (!existingIds.has(nc.id)) {
+        existing.push(nc);
+      } else {
+        let idx = existing.findIndex(c => c.id === nc.id);
+        if (idx !== -1) existing[idx] = nc;
+      }
+    }
+    data[currentMode] = existing;
+    if (committeesToRestore.length > 0) currentId = committeesToRestore[0].id;
+    else { let def = getDefaultCommittee('My Committee'); data[currentMode] = [def]; currentId = def.id; }
+    localStorage.setItem('lastCommitteeId', currentId);
+    saveData(); updateSelect(); populateConfigFromCurrent(); render();
+    alert("Restored successfully!"); playSound('success');
+  } catch(e) {
+    if (e !== 'No file selected') alert("Invalid file or cancelled.");
+  }
+}
+
+// ============================================================
+// PRINT & INVOICE FUNCTIONS
+// ============================================================
+function generateReportHTML(title, content, isWinnerReport) {
+  let now = new Date();
+  let dateStr = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+  let c = currentCommittee();
+  
+  let certNumber = '';
+  if (isWinnerReport) {
+    let mem = c.members.find(m => m.winner && m.winnerDraw === currentDrawPage);
+    if (mem) {
+      certNumber = 'WC-2026-' + String(c.id).slice(-4).padStart(4, '0') + '-' + String(mem.id).slice(-3).padStart(3, '0');
+    }
+  }
+  
+  return `
+  <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+      <title>${title}</title>
+      <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+          font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+          padding: 15px;
+          max-width: 1100px;
+          margin: 0 auto;
+          color: #1e2a3a;
+          background: #f5f7fa;
+          -webkit-text-size-adjust: 100%;
+        }
+        .report { 
+          background: #ffffff; 
+          padding: 30px 35px; 
+          border: 1px solid #d0d7de; 
+          border-radius: 12px; 
+          box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+          width: 100%;
+          overflow-x: auto;
+        }
+        .print-actions { 
+          text-align: center; 
+          margin-bottom: 24px; 
+          padding: 10px 0;
+        }
+        .print-actions button { 
+          padding: 10px 32px; 
+          margin: 0 8px 8px; 
+          border: none; 
+          border-radius: 40px; 
+          font-weight: 700; 
+          cursor: pointer; 
+          font-size: 15px; 
+          min-width: 120px;
+          transition: 0.2s;
+        }
+        .btn-print { background: #0f2b3d; color: #fff; }
+        .btn-print:hover { background: #1b4f72; }
+        .btn-close { background: #e74c3c; color: #fff; }
+        .btn-close:hover { background: #c0392b; }
+        
+        .report-header { text-align: center; border-bottom: 3px solid #0f2b3d; padding-bottom: 18px; margin-bottom: 24px; }
+        .report-header h1 { 
+          color: #0f2b3d; 
+          font-size: 28px; 
+          font-weight: 900;
+          letter-spacing: 1px;
+        }
+        .report-header h1 .gold { color: #F39C12; }
+        .report-header h1 .green { color: #27AE60; }
+        .report-header .sub { color: #555; font-size: 14px; margin-top: 4px; font-weight: 400; }
+        .report-header .tag { color: #777; font-size: 13px; margin-top: 2px; font-style: italic; }
+        .cert-number { text-align: right; font-size: 13px; color: #888; margin-bottom: 12px; font-weight: 600; }
+        
+        h2 { color: #0f2b3d; font-size: 20px; margin: 22px 0 14px; border-bottom: 2px solid #e9ecef; padding-bottom: 8px; }
+        
+        .info-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 8px 20px;
+          margin: 16px 0 20px;
+          padding: 16px 20px;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+        }
+        .info-grid .item { font-size: 14px; padding: 4px 0; }
+        .info-grid .item strong { color: #2c3e50; font-weight: 600; }
+        
+        .summary-box {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 24px 40px;
+          margin: 16px 0 20px;
+          padding: 16px 24px;
+          background: #eaf4ea;
+          border-radius: 8px;
+          border-left: 6px solid #27ae60;
+        }
+        .summary-box .item { font-size: 15px; font-weight: 600; color: #1e2a3a; }
+        .summary-box .item span { font-weight: 400; color: #2c3e50; }
+        
+        .table-wrapper { overflow-x: auto; margin: 12px 0; -webkit-overflow-scrolling: touch; }
+        table { 
+          width: 100%; 
+          border-collapse: collapse; 
+          margin: 6px 0; 
+          font-size: 13px;
+          min-width: 480px;
+        }
+        th, td { 
+          border: 1px solid #d0d7de; 
+          padding: 10px 12px; 
+          text-align: left; 
+          word-break: break-word;
+        }
+        th { 
+          background: #0f2b3d; 
+          color: #fff; 
+          font-weight: 700; 
+          white-space: nowrap;
+          font-size: 12px;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+        tr:nth-child(even) { background: #fafbfc; }
+        tr:hover { background: #f1f3f5; }
+        
+        .highlight {
+          background: #fef9f0;
+          padding: 20px 24px;
+          border-radius: 10px;
+          border-left: 6px solid #F39C12;
+          margin: 18px 0;
+        }
+        .highlight .winner-name { color: #F39C12; font-weight: 700; font-size: 18px; }
+        .highlight .amount { color: #27ae60; font-weight: 700; font-size: 18px; }
+        .highlight .detail-row { padding: 4px 0; font-size: 15px; }
+        
+        .confirmation-box {
+          margin: 18px 0;
+          padding: 18px 22px;
+          background: #f8f9fa;
+          border-radius: 8px;
+          border: 1px solid #e9ecef;
+          font-size: 15px;
+          line-height: 1.8;
+        }
+        
+        .signature { 
+          margin-top: 35px; 
+          border-top: 2px dashed #0f2b3d; 
+          padding-top: 22px; 
+          display: flex; 
+          justify-content: space-between; 
+          flex-wrap: wrap; 
+          gap: 12px;
+          font-size: 14px;
+        }
+        .footer { 
+          margin-top: 25px; 
+          text-align: center; 
+          font-size: 13px; 
+          color: #888; 
+          border-top: 1px solid #e9ecef; 
+          padding-top: 20px; 
+        }
+        .footer .brand { font-weight: 600; color: #0f2b3d; }
+        .footer .gen { font-size: 11px; color: #aaa; margin-top: 4px; }
+        
+        .winner-name { color: #F39C12; font-weight: 700; }
+        .amount { color: #27ae60; font-weight: 700; }
+        
+        @media print {
+          body { background: #fff; padding: 0; margin: 0; }
+          .report { border: none; box-shadow: none; padding: 20px 25px; border-radius: 0; }
+          .print-actions { display: none; }
+          tr:hover { background: inherit; }
+          .summary-box { background: #eaf4ea !important; }
+          .highlight { background: #fef9f0 !important; }
+        }
+        @media (max-width: 600px) {
+          body { padding: 8px; }
+          .report { padding: 16px; }
+          .info-grid { grid-template-columns: 1fr; padding: 12px 16px; }
+          .summary-box { flex-direction: column; gap: 6px; padding: 12px 16px; }
+          table { font-size: 11px; min-width: 300px; }
+          th, td { padding: 6px 8px; }
+          .report-header h1 { font-size: 20px; }
+          .print-actions button { min-width: 80px; padding: 8px 16px; font-size: 13px; }
+          .highlight { padding: 14px 16px; }
+          .highlight .winner-name, .highlight .amount { font-size: 16px; }
+          .signature { flex-direction: column; align-items: center; text-align: center; }
+        }
+      </style>
+    </head>
+    <body>
+      <div class="report">
+        <div class="print-actions">
+          <button class="btn-print" onclick="window.print()">🖨️ Print</button>
+          <button class="btn-close" onclick="window.close()">✖ Close</button>
+        </div>
+        ${isWinnerReport ? '<div class="cert-number">Certificate No.: ' + certNumber + '</div>' : ''}
+        <div class="report-header">
+          <h1><span class="gold">SAATH</span> <span class="green">SAHARA</span></h1>
+          <div class="sub">Interest-Free Committee Manager</div>
+          <div class="tag">"Together we contribute. Together we grow. Together we succeed."</div>
+        </div>
+        <h2 style="text-align:center; border-bottom:none; font-size:24px; margin-top:8px;">${title}</h2>
+        ${content}
+        <div class="signature">
+          <div><strong>Manager Signature:</strong> ____________________</div>
+          <div><strong>Date:</strong> ${dateStr}</div>
+        </div>
+        <div class="footer">
+          <div class="brand">SAATH SAHARA — Private • Offline • Interest-Free</div>
+          <div class="gen">Generated: ${dateStr}</div>
+        </div>
+      </div>
+    </body>
+  </html>`;
+}
+
+function printReport() {
+  if (currentMode !== 'manager') { alert("Only manager can print reports."); return; }
+  let c = currentCommittee();
+  if (!c.created) { alert("Create committee first."); return; }
+  
+  let totalColl = 0;
+  for (let m of c.members) if (m.payments) for (let p of m.payments) if (Array.isArray(p)) totalColl += p.reduce((a,b)=>a+(b||0),0); else totalColl += p||0;
+  
+  let winnersHtml = '';
+  for (let i=0; i<c.members.length; i++) {
+    let m = c.members[i];
+    if (m.winner && m.winnerDraw) {
+      let potAmount = getTotalPerDraw(c, m.winnerDraw-1);
+      winnersHtml += `<tr><td>${m.winnerDraw}</td><td>${m.name}</td><td>Rs. ${potAmount.toLocaleString()}</td></tr>`;
+    }
+  }
+  
+  let membersHtml = '';
+  c.members.forEach((m,i) => {
+    let total=0;
+    if (m.payments) for (let p of m.payments) if (Array.isArray(p)) total += p.reduce((a,b)=>a+(b||0),0); else total += p||0;
+    membersHtml += `<tr><td>${i+1}</td><td>${m.name}</td><td>${m.whatsapp||'-'}</td><td>${m.winner ? 'Yes (Draw ' + m.winnerDraw + ')' : 'No'}</td><td>Rs. ${total.toLocaleString()}</td></tr>`;
+  });
+  
+  let content = `
+    <div class="info-grid">
+      <div class="item"><strong>Committee:</strong> ${c.name}</div>
+      <div class="item"><strong>Manager:</strong> ${c.managerName || 'Not set'}</div>
+      <div class="item"><strong>Start Date:</strong> ${c.startDate}</div>
+      <div class="item"><strong>Total Members:</strong> ${c.totalMembers}</div>
+      <div class="item"><strong>Installment:</strong> Rs. ${c.installmentAmount}</div>
+      <div class="item"><strong>Payment Freq:</strong> ${c.payFreq}</div>
+      <div class="item"><strong>Draw Schedule:</strong> ${c.drawSch}</div>
+    </div>
+    <div class="summary-box">
+      <div class="item">Total Committee Amount: <span>Rs. ${totalCommittee(c).toLocaleString()}</span></div>
+      <div class="item">Total Collected: <span>Rs. ${totalColl.toLocaleString()}</span></div>
+      <div class="item">Remaining: <span>Rs. ${(totalCommittee(c)-totalColl).toLocaleString()}</span></div>
+    </div>
+    <h2>Winner Summary</h2>
+    <div class="table-wrapper">
+    <table>
+      <tr><th>Draw #</th><th>Winner</th><th>Amount Received</th></tr>
+      ${winnersHtml || '<tr><td colspan="3">No winners declared yet.</td></tr>'}
+    </table>
+    </div>
+    <h2>Member Details</h2>
+    <div class="table-wrapper">
+    <table>
+      <tr><th>#</th><th>Member</th><th>WhatsApp</th><th>Winner?</th><th>Total Paid</th></tr>
+      ${membersHtml}
+    </table>
+    </div>
+  `;
+  
+  let win = window.open('', '_blank');
+  if (!win) { alert("Please allow popups."); return; }
+  win.document.write(generateReportHTML('Committee Report', content, false));
+  win.document.close();
+}
+
+function generateWinnerReport() {
+  if (currentMode !== 'manager') { alert("Only manager can generate winner report."); return; }
+  let c = currentCommittee();
+  if (!c.created) { alert("Create committee first."); return; }
+  
+  let winner = prompt("Enter member name (or part) for Winner Report:", c.members[0]?.name);
+  if (!winner) return;
+  let mem = c.members.find(m => m.name.toLowerCase().includes(winner.toLowerCase()));
+  if (!mem) { alert("Member not found."); return; }
+  if (!mem.winner) { alert("This member is not a winner yet."); return; }
+  
+  let drawIdx = mem.winnerDraw - 1;
+  let potAmount = getTotalPerDraw(c, drawIdx);
+  
+  let content = `
+    <div class="info-grid">
+      <div class="item"><strong>Committee:</strong> ${c.name}</div>
+      <div class="item"><strong>Manager:</strong> ${c.managerName || 'Not set'}</div>
+      <div class="item"><strong>Start Date:</strong> ${c.startDate}</div>
+      <div class="item"><strong>End Date:</strong> ${document.getElementById('endDateDisplay').innerText}</div>
+    </div>
+    <div class="highlight">
+      <h2 style="border-bottom:none; margin-top:0;">Winner Details</h2>
+      <div class="detail-row"><strong>Winner:</strong> <span class="winner-name">${mem.name}</span></div>
+      <div class="detail-row"><strong>WhatsApp:</strong> ${mem.whatsapp || 'N/A'}</div>
+      <div class="detail-row"><strong>Draw Number:</strong> #${mem.winnerDraw}</div>
+      <div class="detail-row"><strong>Amount Received:</strong> <span class="amount">Rs. ${potAmount.toLocaleString()}</span></div>
+    </div>
+    <div class="confirmation-box">
+      <strong>Official Confirmation</strong><br>
+      This certificate serves as an official record of the committee payout and confirms that <strong>${mem.name}</strong> was declared the winner of <strong>Draw #${mem.winnerDraw}</strong> and received the full committee amount of <strong>Rs. ${potAmount.toLocaleString()}</strong>.
+    </div>
+  `;
+  
+  let win = window.open('', '_blank');
+  if (!win) { alert("Please allow popups."); return; }
+  win.document.write(generateReportHTML('Winner Certificate', content, true));
+  win.document.close();
+}
+
+function generatePDFInvoice() {
+  if (currentMode !== 'manager') { alert("Only manager can generate invoice."); return; }
+  let c = currentCommittee();
+  if (!c.created) { alert("Create committee first."); return; }
+  let member = prompt("Enter member name (or part):", c.members[0]?.name);
+  if (!member) return;
+  let mem = c.members.find(m => m.name.toLowerCase().includes(member.toLowerCase()));
+  if (!mem) { alert("Member not found."); return; }
+  
+  let totalPaid=0, details="";
+  if (mem.payments) for (let i=0; i<mem.payments.length; i++) {
+    let dt = Array.isArray(mem.payments[i]) ? mem.payments[i].reduce((a,b)=>a+(b||0),0) : 0;
+    totalPaid += dt;
+    if (dt > 0) details += '<tr><td>Draw ' + (i+1) + '</td><td>Rs. ' + dt.toLocaleString() + '</td></tr>';
+  }
+  let winnerInfo = '';
+  let amountReceived = 0;
+  if (mem.winner) {
+    amountReceived = getTotalPerDraw(c, mem.winnerDraw-1);
+    winnerInfo += '<div class="detail-row"><strong>Current Winner:</strong> Yes (Draw ' + mem.winnerDraw + ')</div>';
+    winnerInfo += '<div class="detail-row"><strong>Amount Received as Winner:</strong> Rs. ' + amountReceived.toLocaleString() + '</div>';
+  } else {
+    winnerInfo += '<div class="detail-row"><strong>Current Winner:</strong> No</div>';
+  }
+  let prevWins = c.members.filter(m => m.id === mem.id && m.winner && m.winnerDraw !== mem.winnerDraw);
+  if (prevWins.length > 0) {
+    winnerInfo += '<div class="detail-row"><strong>Previous Wins:</strong> Draw(s) ' + prevWins.map(m => m.winnerDraw).join(', ') + '</div>';
+  }
+  
+  let content = `
+    <div class="info-grid">
+      <div class="item"><strong>Committee:</strong> ${c.name}</div>
+      <div class="item"><strong>Member:</strong> ${mem.name}</div>
+      <div class="item"><strong>WhatsApp:</strong> ${mem.whatsapp || 'N/A'}</div>
+      <div class="item"><strong>Date:</strong> ${new Date().toLocaleDateString()}</div>
+    </div>
+    <div style="margin:12px 0; padding:12px 16px; background:#f8f9fa; border-radius:8px;">
+      ${winnerInfo}
+    </div>
+    <div class="summary-box">
+      <div class="item">Total Expected: <span>Rs. ${(totalCommittee(c)/c.members.length).toLocaleString()}</span></div>
+      <div class="item">Total Paid: <span>Rs. ${totalPaid.toLocaleString()}</span></div>
+      <div class="item">Remaining: <span>Rs. ${((totalCommittee(c)/c.members.length)-totalPaid).toLocaleString()}</span></div>
+    </div>
+    <h2>Payment History</h2>
+    <div class="table-wrapper">
+    <table>
+      <tr><th>Draw</th><th>Amount</th></tr>
+      ${details || '<tr><td colspan="2">No payments recorded.</td></tr>'}
+    </table>
+    </div>
+  `;
+  
+  let win = window.open('', '_blank');
+  if (!win) { alert("Please allow popups."); return; }
+  win.document.write(generateReportHTML('Invoice', content, false));
+  win.document.close();
+}
+
+function sendWhatsAppReminders() {
+  if (currentMode !== 'manager') { alert("Only manager can send reminders."); return; }
+  let c = currentCommittee();
+  if (!c.created) { alert("Create committee first."); return; }
+  let drawIdx = currentDrawPage - 1;
+  let dueDates = getPaymentDueDatesCapped(c.startDate, drawIdx, c.payFreq, c.drawSch);
+  let today = new Date(); today.setHours(0,0,0,0);
+  let overdue = [];
+  for (let m of c.members) {
+    if (m.winner) continue;
+    let pays = m.payments[drawIdx] || [];
+    for (let i=0; i<dueDates.length; i++) {
+      let date = dueDates[i];
+      let exp = getDailyAmount(date.getFullYear(), date.getMonth(), date.getDate() - 1, c.installmentAmount);
+      if (date < today && (pays[i]||0) < exp) { overdue.push(m.name); break; }
+    }
+  }
+  if (overdue.length === 0) { alert("No overdue payments!"); return; }
+  let msg = 'Committee: ' + c.name + '\nReminder for pending payments:\n' + overdue.join(', ');
+  location.href = 'https://wa.me/?text=' + encodeURIComponent(msg);
+}
+
+function addCommittee() {
+  let name = prompt("New committee name:");
+  if (!name) return;
+  let list = getModeCommittees();
+  let newC = getDefaultCommittee(name);
+  list.push(newC);
+  currentId = newC.id;
+  localStorage.setItem('lastCommitteeId', currentId);
+  document.getElementById('startDate').value = '';
+  document.getElementById('memberCount').value = '';
+  document.getElementById('installmentAmt').value = '';
+  document.getElementById('payFreq').value = 'daily';
+  document.getElementById('drawSch').value = 'monthly';
+  document.getElementById('managerNameInput').value = '';
+  saveData();
+  updateSelect();
+  render();
+  playSound('success');
+}
+
+function deleteCommittee() {
+  let list = getModeCommittees();
+  if (list.length === 1) {
+    alert("At least one committee required.");
+    return;
+  }
+  if (confirm("Delete this committee?")) {
+    list = list.filter(c => c.id !== currentId);
+    data[currentMode] = list;
+    if (list.length > 0) {
+      currentId = list[0].id;
+    } else {
+      let def = getDefaultCommittee('My Committee');
+      data[currentMode] = [def];
+      currentId = def.id;
+    }
+    localStorage.setItem('lastCommitteeId', currentId);
+    saveData();
+    updateSelect();
+    populateConfigFromCurrent();
+    render();
+    playSound('success');
+  }
+}
+
+function resetCommittee() {
+  if (confirm("Reset all data for this committee?")) {
+    let c = currentCommittee();
+    c.members = []; c.created = false; c.startDate = ''; c.totalMembers = 0; c.installmentAmount = 0;
+    c.drawWinnerDeclared = []; c.managerName = '';
+    document.getElementById('managerNameInput').value = '';
+    saveData(); render(); playSound('success');
+  }
+}
+
+function escapeHtml(str) { return String(str).replace(/[&<>]/g, function(m) { if (m==='&') return '&amp;'; if (m==='<') return '&lt;'; if (m==='>') return '&gt;'; return m; }); }
+
+function getDateTimeString() {
+  let now = new Date();
+  let day = String(now.getDate()).padStart(2,'0');
+  let month = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][now.getMonth()];
+  let year = now.getFullYear();
+  let hours = now.getHours();
+  let minutes = String(now.getMinutes()).padStart(2,'0');
+  let ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  if (hours === 0) hours = 12;
+  return day + month + year + '_' + hours + ':' + minutes + ampm;
+}
+
+// ============================================================
+// MENU FUNCTIONS
+// ============================================================
+function showMenu() { document.getElementById('menuModal').style.display = 'flex'; }
+function closeMenuModal() { document.getElementById('menuModal').style.display = 'none'; }
+function showLanguageModal() { document.getElementById('languageModal').style.display = 'flex'; }
+function closeLanguageModal() { document.getElementById('languageModal').style.display = 'none'; }
+function showGuide() { document.getElementById('guideModal').style.display = 'flex'; }
+function closeGuideModal() { document.getElementById('guideModal').style.display = 'none'; }
+function switchGuideLang(lang) {
+  document.getElementById('guideEn').style.display = lang==='en' ? 'block' : 'none';
+  document.getElementById('guideHi').style.display = lang==='hi' ? 'block' : 'none';
+  document.getElementById('guideUr').style.display = lang==='ur' ? 'block' : 'none';
+  document.getElementById('guideBn').style.display = lang==='bn' ? 'block' : 'none';
+}
+function toggleEditSettings() {
+  let sp = document.getElementById('setupPage');
+  editSettingsActive = !editSettingsActive;
+  sp.style.display = editSettingsActive ? 'block' : 'none';
+  document.getElementById('editSettingsBtn').innerHTML = editSettingsActive ? '[Hide Settings]' : '[Show Settings]';
+}
+function updateManagerName(val) {
+  let c = currentCommittee();
+  if (c && currentMode === 'manager') { c.managerName = val; saveData(); }
+}
+function updateName(mid, val) {
+  if (currentMode !== 'manager') return;
+  let c = currentCommittee();
+  let m = c.members.find(x => x.id === mid);
+  if (m) { m.name = val; saveData(); render(); playSound('save'); }
+}
+function updateWhatsApp(mid, val) {
+  if (currentMode !== 'manager') return;
+  let c = currentCommittee();
+  let m = c.members.find(x => x.id === mid);
+  if (m) { m.whatsapp = val; saveData(); render(); playSound('save'); }
+}
+function sendReminderForMember(mid) {
+  if (currentMode !== 'manager') return;
+  let c = currentCommittee();
+  let m = c.members.find(x => x.id === mid);
+  if (m && m.whatsapp) {
+    let num = m.whatsapp.replace(/[^0-9]/g, '');
+    location.href = 'https://wa.me/' + num + '?text=' + encodeURIComponent('Committee: ' + c.name + '\nDear ' + m.name + ', please check your pending payments.');
+  } else alert("No WhatsApp number.");
+}
+
+// ============================================================
+// STAT CLICKS
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  let today = new Date().toISOString().slice(0,10);
+  document.getElementById('startDate').value = today;
+  document.getElementById('statTotal').addEventListener('click', () => { if (currentMode==='manager') document.getElementById('setupPage').scrollIntoView({behavior:'smooth'}); });
+  document.getElementById('statRemaining').addEventListener('click', () => { document.querySelector('.table-wrapper').scrollIntoView({behavior:'smooth'}); });
+  document.getElementById('statProgress').addEventListener('click', () => { alert('Winners: '+document.getElementById('drawDone').innerText); });
+  document.getElementById('statPer').addEventListener('click', () => { alert('Per member: '+document.getElementById('perMem').innerText); });
+});
+
+// ============================================================
+// INIT
+// ============================================================
+loadData();
+let savedMode = localStorage.getItem('currentMode');
+if (savedMode && ['manager','member'].includes(savedMode)) currentMode = savedMode;
+else currentMode = 'manager';
+
+let savedId = localStorage.getItem('lastCommitteeId');
+if (savedId) {
+  let list = getModeCommittees();
+  if (list.find(c => c.id === Number(savedId))) {
+    currentId = Number(savedId);
+  }
+}
+if (!currentId) {
+  let list = getModeCommittees();
+  if (list.length > 0) currentId = list[0].id;
+}
+changeRole(currentMode);
+updateLanguage();
+let rem = document.getElementById('backupReminder');
+let t = texts[currentLanguage];
+if (rem) rem.innerText = t.backupReminder;
+</script>
+</body>
+</html>
