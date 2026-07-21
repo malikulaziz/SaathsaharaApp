@@ -1,0 +1,14 @@
+{
+  "background_color": "#1509b3",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "SAATH SAHARA",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "SAATH SAHARA",
+  "start_url": "/",
+  "theme_color": "#5284b1",
+  "id": "saathsahara-app",
+  "description": "Intrest-Free Committee Manager for BEESI/KAMETI",
+  "lang": "en"
+}
